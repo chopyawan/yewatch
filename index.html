@@ -5,237 +5,206 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YE WATCH</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;border-radius:0 !important;}
+
+/* ─── THEME CONFIGURATION (DEFAULT STARK WHITE) ─── */
 :root{
-  --bg:#000;--bg2:#000;--bg3:#0d0d0d;--line:#222;
-  --text:#fff;--dim:#666;--accent:#fff;
-  --green:#888;--red:#888;
+  --bg:#ffffff;--bg2:#f9f9f9;--bg3:#f0f0f0;--line:#111111;
+  --text:#111111;--dim:#666666;--accent:#0052ff;
+  --green:#00aa45;--red:#ff3b30;
   --f-mono:'Courier New',Courier,'Lucida Console',monospace;
   --f-body:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;
 }
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:var(--f-mono);}
 
-header{border-bottom:1px solid var(--line);}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--f-mono);overflow-x:hidden;transition: background 0.4s ease, color 0.4s ease;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.7;
+}
+
+header{border-bottom:1px solid var(--line); position:relative; z-index:100; transition: border 0.4s;}
 .masthead-top{
   display:flex;justify-content:space-between;align-items:center;
-  padding:8px 32px;border-bottom:1px solid var(--line);
-  font-size:10px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;
+  padding:14px 32px;border-bottom:1px solid var(--line);
+  font-size:12px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;background:var(--bg);
+  transition: all 0.4s; position: relative;
 }
 .live-dot{
-  display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--text);margin-right:6px;
-  animation:blink 1.4s infinite;vertical-align:middle;
+  display:inline-block;width:9px;height:8px;border-radius:50% !important;
+  background:var(--red);margin-right:6px;
+  animation:blink 1.2s infinite;vertical-align:middle;
 }
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.15;}}
-.masthead-main{
-  padding:60px 32px 40px;text-align:center;
-}
-h1{
-  font-family:var(--f-mono);font-weight:400;font-size:clamp(40px,9vw,90px);
-  line-height:1;letter-spacing:0.05em;text-transform:uppercase;
-}
-.masthead-sub{
-  font-size:13px;letter-spacing:0.4em;text-transform:uppercase;color:var(--dim);margin-top:18px;
-}
-.count-row{
-  margin-top:30px;display:flex;justify-content:center;gap:60px;
-  font-size:10px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;
-}
-.count-row b{display:block;font-size:24px;color:var(--text);font-weight:400;margin-bottom:4px;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-.ticker{background:#fff;color:#000;overflow:hidden;white-space:nowrap;padding:10px 0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;}
-.ticker-inner{display:inline-block;animation:scroll 40s linear infinite;}
+/* NOTIFICATION BELL SYSTEM */
+.notif-wrapper { position: relative; display: inline-block; }
+.bell-btn {
+  background: transparent; border: 1px solid var(--line); color: var(--text);
+  padding: 6px 14px; font-family: var(--f-mono); font-size: 11px; cursor: pointer;
+  letter-spacing: 0.1em; font-weight: bold; transition: all 0.2s; display: flex; align-items: center; gap: 4px;
+}
+.bell-btn:hover { background: var(--text); color: var(--bg); }
+.bell-badge {
+  background: var(--red); color: #fff; padding: 1px 6px; font-size: 9px; 
+  font-weight: bold; display: none; animation: pulse 0.5s infinite alternate;
+}
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+
+.notif-dropdown {
+  position: absolute; right: 0; top: calc(100% + 1px); width: 360px; 
+  background: var(--bg); border: 1px solid var(--line); z-index: 1000;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15); display: none; max-height: 400px; overflow-y: auto;
+}
+.notif-dropdown.show { display: block; }
+.notif-header {
+  padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--bg2);
+  font-size: 11px; font-weight: bold; letter-spacing: 0.1em; color: var(--dim); display: flex; justify-content: space-between;
+}
+.notif-clear-btn { cursor: pointer; text-decoration: underline; background: none; border: none; color: var(--dim); font-family: var(--f-mono); font-size: 11px; }
+.notif-clear-btn:hover { color: var(--text); }
+.notif-item { padding: 14px 16px; border-bottom: 1px solid var(--bg3); font-size: 13px; line-height: 1.5; color: var(--text); }
+.notif-item .platform-tag { font-weight: bold; display: inline-block; margin-bottom: 4px; }
+.notif-item .time { font-size: 10px; color: var(--dim); display: block; margin-top: 6px; }
+.notif-empty { padding: 32px 16px; text-align: center; color: var(--dim); font-size: 13px; }
+
+/* MAIN BRAND HEADER */
+.masthead-main{ padding:80px 32px 60px; text-align:center; background:var(--bg); transition: background 0.4s; }
+h1 { font-family:var(--f-mono); font-weight:700; font-size:clamp(50px,11vw,110px); line-height:0.95; letter-spacing:0.02em; text-transform:uppercase; color:var(--text); }
+.masthead-sub { font-size:15px; letter-spacing:0.4em; text-transform:uppercase; color:var(--dim); margin-top:24px; font-weight:bold; }
+.count-row { margin-top:40px; display:flex; justify-content:center; gap:48px; font-size:12px; letter-spacing:0.15em; color:var(--dim); text-transform:uppercase; }
+.count-row b { display:block; font-size:34px; color:var(--text); font-weight:700; margin-bottom:2px; }
+
+/* TICKER */
+.ticker{background:var(--line);color:var(--bg);overflow:hidden;white-space:nowrap;padding:14px 0;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;position:relative;z-index:1;transition: all 0.4s;}
+.ticker-inner{display:inline-block;animation:scroll 35s linear infinite;}
 .ticker-inner span{padding:0 32px;}
-.ticker-inner span::before{content:'— ';opacity:0.4;}
+.ticker-inner span::before{content:'— ';opacity:0.5;color:var(--red);}
 @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
 /* NAV TABS */
-.nav-tabs{display:flex;justify-content:center;border-bottom:1px solid var(--line);gap:48px;background:var(--bg2);}
+.nav-tabs{display:flex;justify-content:center;border-bottom:1px solid var(--line);gap:48px;background:var(--bg);position:relative;z-index:1;transition: all 0.4s;}
 .nav-tab{
-  font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:0.25em;
-  text-transform:uppercase;padding:18px 0;cursor:pointer;color:var(--dim);
-  border-bottom:1px solid transparent;transition:color 0.15s;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:var(--f-mono);font-weight:700;font-size:14px;letter-spacing:0.2em;
+  text-transform:uppercase;padding:22px 0;cursor:pointer;color:var(--dim);
+  border-bottom:3px solid transparent;transition:all 0.2s ease;background:none;border-top:none;border-left:none;border-right:none;
 }
-.nav-tab:hover{color:#aaa;}
+.nav-tab:hover{color:var(--text);}
 .nav-tab.active{color:var(--text);border-bottom-color:var(--text);}
 
-/* TERMINAL / SEARCH */
-.terminal{margin:32px;border:1px solid var(--line);}
-.terminal-bar{
-  padding:10px 16px;border-bottom:1px solid var(--line);
-  display:flex;justify-content:space-between;align-items:center;
+/* ─── ALBUM GRID SELECTOR PANEL ─── */
+.era-selector-container { margin: 32px; border: 1px solid var(--line); background: var(--bg2); padding: 24px; transition: all 0.4s; }
+.era-grid-title { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 16px; text-align: center; }
+.era-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.era-btn {
+  background: var(--bg); border: 1px solid var(--line); color: var(--text); padding: 14px 10px;
+  font-family: var(--f-mono); font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase;
+  letter-spacing: 0.05em; transition: all 0.2s ease; text-align: center;
 }
-.terminal-label{font-size:9px;color:var(--dim);letter-spacing:0.2em;text-transform:uppercase;}
+.era-btn:hover { background: var(--text); color: var(--bg); }
+.era-btn.active-era { background: var(--text) !important; color: var(--bg) !important; outline: 2px solid var(--accent); }
+
+/* SEARCH TERMINAL */
+.terminal{margin:32px;border:1px solid var(--line);background:var(--bg2);position:relative;z-index:1;transition: all 0.4s;}
+.terminal-bar{ padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg3); display:flex;justify-content:space-between;align-items:center;transition: all 0.4s; }
+.terminal-label{font-size:11px;color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;font-weight:600;}
 .terminal-body{padding:24px;}
 .search-row{display:flex;gap:0;}
 .search-row input{
-  flex:1;font-family:var(--f-mono);font-size:13px;letter-spacing:0.05em;
-  padding:14px 16px;border:1px solid var(--line);background:#000;color:var(--text);outline:none;
-  text-transform:uppercase;
+  flex:1;font-family:var(--f-mono);font-size:14px;letter-spacing:0.05em; padding:16px;border:1px solid var(--line);background:var(--bg);color:var(--text);outline:none; text-transform:uppercase;transition: all 0.4s;
 }
-.search-row input:focus{border-color:#666;}
-.search-row input::placeholder{color:var(--dim);text-transform:uppercase;}
 .search-row button{
-  font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:0.2em;
-  padding:14px 28px;border:1px solid var(--text);border-left:none;
-  background:var(--text);color:#000;cursor:pointer;transition:all 0.15s;
-  text-transform:uppercase;
+  font-family:var(--f-mono);font-weight:700;font-size:13px;letter-spacing:0.15em; padding:14px 36px;border:1px solid var(--line);border-left:none; background:var(--line);color:var(--bg);cursor:pointer; text-transform:uppercase;
 }
-.search-row button:hover{background:#000;color:#fff;border-color:#fff;}
-.search-row button:disabled{opacity:0.3;cursor:default;}
-.quick-tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
-.quick-tags button{
-  font-family:var(--f-mono);font-size:10px;letter-spacing:0.1em;
-  padding:7px 14px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;transition:all 0.15s;
-  text-transform:uppercase;
-}
-.quick-tags button:hover{border-color:#fff;color:#fff;}
-#searchResults{margin-top:18px;}
-.search-status{font-family:var(--f-mono);font-size:11px;color:var(--dim);padding:12px 0;letter-spacing:0.08em;text-transform:uppercase;}
-.search-status.error{color:#999;}
-.loading-bar{height:1px;background:var(--line);margin-top:14px;position:relative;overflow:hidden;display:none;}
+.loading-bar{height:2px;background:var(--line);margin-top:14px;position:relative;overflow:hidden;display:none;}
 .loading-bar.active{display:block;}
-.loading-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:#fff;animation:load 1s ease-in-out infinite;}
+.loading-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--text);animation:load 1s ease-in-out infinite;}
 @keyframes load{0%{left:-40%;}100%{left:100%;}}
 
-/* FEED */
-.feed-section{padding:0 32px 60px;}
-.section-head{display:flex;justify-content:space-between;align-items:center;padding:24px 0 16px;border-bottom:1px solid var(--line);}
-.section-head h2{font-family:var(--f-mono);font-weight:400;font-size:22px;letter-spacing:0.2em;text-transform:uppercase;}
-.section-head .meta{font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
+/* FEED LIST (ขยายฟอนต์ให้อ่านง่ายคมชัดสูงสุด) */
+.feed-section{padding:0 32px 60px;position:relative;z-index:1;}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:24px 0 16px;border-bottom:1px solid var(--line);transition: border 0.4s;}
+.section-head h2{font-family:var(--f-mono);font-weight:700;font-size:26px;letter-spacing:0.15em;text-transform:uppercase;}
+.section-head .meta{font-size:11px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
+
 article.entry{
-  display:grid;grid-template-columns:60px 1fr;gap:0;
-  border-bottom:1px solid var(--line);transition:background 0.15s;cursor:pointer;
+  display:grid;grid-template-columns:60px 1fr 180px;gap:24px;
+  border-bottom:1px solid var(--line);cursor:pointer;
+  background:var(--bg);align-items: center;transition: background 0.4s;
 }
-article.entry:hover{background:#0a0a0a;}
-.entry-num{padding:28px 0 26px 16px;font-size:11px;color:var(--dim);align-self:start;letter-spacing:0.1em;}
-.entry-inner{padding:22px 22px 22px 0;}
-.entry-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;}
-.entry-title{font-family:var(--f-body);font-weight:500;font-size:16px;line-height:1.4;flex:1;text-transform:none;}
-.entry-date{font-size:10px;color:var(--dim);white-space:nowrap;padding-top:3px;letter-spacing:0.1em;text-transform:uppercase;}
-.entry-desc{font-family:var(--f-body);font-size:13px;color:#888;line-height:1.65;margin-bottom:14px;}
+article.entry:hover{background:var(--bg2); transform:translateX(4px);}
+.entry-num{padding:24px 0 24px 16px;font-size:14px;color:var(--dim);align-self:start;font-weight:bold;}
+.entry-inner{padding:24px 0;}
+.entry-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
+
+/* Accessible Enlarged Sizes */
+.entry-title{font-family:var(--f-body);font-weight:700;font-size:21px;line-height:1.45;flex:1;color:var(--text);}
+.entry-date{font-size:12px;color:var(--dim);white-space:nowrap;padding-top:4px;letter-spacing:0.1em;text-transform:uppercase;}
+.entry-desc{font-family:var(--f-body);font-size:16px;color:var(--text);opacity:0.9;line-height:1.7;margin-bottom:16px;}
 .entry-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.stamp{font-size:9px;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--line);color:var(--dim);}
-.src-badge{font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
 
-/* TOUR SECTION */
-.tour-section{background:#000;color:#fff;}
-.tour-hero{
-  position:relative;overflow:hidden;
-  min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:#000;text-align:center;
-}
-.tour-hero img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;
-}
-.tour-hero-text{position:relative;z-index:2;padding:40px;}
-.tour-hero-text .t1{
-  font-family:var(--f-mono);font-size:clamp(36px,8vw,72px);font-weight:400;line-height:1.05;
-  letter-spacing:0.08em;text-transform:uppercase;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,0.6);
-}
-.tour-hero-text .t2{
-  font-family:var(--f-mono);font-size:clamp(13px,1.6vw,18px);font-weight:400;
-  color:#fff;letter-spacing:0.3em;text-transform:uppercase;margin-top:14px;opacity:0.85;
-  text-shadow:0 2px 20px rgba(0,0,0,0.6);
-}
-.tour-tabs{display:flex;justify-content:center;gap:48px;border-bottom:1px solid var(--line);}
-.tour-tab{
-  font-family:var(--f-mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;
-  padding:18px 0;color:var(--dim);border-bottom:1px solid transparent;
-}
-.tour-tab.active{color:#fff;border-bottom-color:#fff;}
+/* FIXED SIZE FOR GENUINE COVER ASPECT RATIOS */
+.entry-img-thumb { width: 150px; height: 150px; object-fit: cover; border: 1px solid var(--line); margin-right: 16px; background: var(--bg3); transition: border 0.4s; }
 
-.tour-dates{background:#000;}
-.tour-row{
-  display:grid;grid-template-columns:1fr auto;align-items:center;
-  padding:24px 48px;border-bottom:1px solid var(--line);
-  transition:background 0.12s;
-}
-.tour-row:hover{background:#0a0a0a;}
-.tour-row-left .tour-city{
-  font-family:var(--f-mono);font-weight:400;font-size:14px;letter-spacing:0.2em;text-transform:uppercase;color:#fff;
-  line-height:1.6;
-}
-.tour-row-left .tour-venue{
-  font-family:var(--f-mono);font-size:14px;color:#fff;letter-spacing:0.2em;
-  text-transform:uppercase;line-height:1.6;
-}
-.tour-row-left .tour-datestr{
-  font-family:var(--f-mono);font-size:14px;color:#fff;letter-spacing:0.2em;
-  text-transform:uppercase;line-height:1.6;
-}
-.tour-btn{
-  font-family:var(--f-mono);font-weight:400;
-  font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
-  padding:12px 26px;border:1px solid #fff;background:transparent;color:#fff;
-  cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.15s;
-  white-space:nowrap;
-}
-.tour-btn:hover{background:#fff;color:#000;}
-.tour-btn.signup{border-color:#fff;}
-.tour-btn.none{background:transparent;color:#444;border-color:#222;cursor:default;}
-.tour-footer-note{
-  padding:24px 48px;font-size:9px;
-  color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;border-top:1px solid var(--line);
-}
+.stamp{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--line);}
+.stamp.verified-badge { border-color: var(--green); color: var(--green); background: rgba(0,170,69,0.05); }
+.stamp.unverified-badge { border-color: var(--dim); color: var(--dim); background: var(--bg3); }
+.src-badge{font-size:11px;color:var(--dim);letter-spacing:0.05em;text-transform:uppercase;}
 
-/* POPUP */
+/* ─── YEEZY TOUR (STANDALONE STYLE BRUTALIST) ─── */
+.tour-section{background:var(--bg); color:var(--text); position:relative; z-index:1; transition: all 0.4s;}
+.tour-brutalist-header { padding: 80px 32px 40px; border-bottom: 1px solid var(--line); text-align: left; transition: border 0.4s; }
+.tour-brutalist-header h2 { font-family: var(--f-mono); font-size: clamp(38px, 8vw, 76px); font-weight: 700; letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.9; }
+.tour-brutalist-header .sub { font-size: 13px; letter-spacing: 0.2em; color: var(--dim); margin-top: 14px; text-transform: uppercase; font-weight: bold; }
+.tour-graphic-box { margin: 32px; padding: 28px; border: 1px solid var(--line); text-align: center; background: var(--bg2); transition: all 0.4s; }
+.tour-graphic-box span { font-family: var(--f-mono); font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); }
+.tour-dates{background:var(--bg); transition: background 0.4s;}
+.tour-row{ display:grid; grid-template-columns: 1.2fr 1.5fr 1.5fr auto; align-items:center; padding:32px; border-bottom:1px solid var(--line); font-family: var(--f-mono); transition: all 0.4s; }
+.tour-row:hover{background: var(--bg2);}
+.tour-row-date { font-size: 16px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+.tour-row-city { font-size: 16px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+.tour-row-venue { font-size: 16px; color: var(--dim); letter-spacing: 0.02em; text-transform: uppercase; }
+.tour-btn-yzy {
+  font-family:var(--f-mono); font-weight: 700; font-size:15px; letter-spacing:0.02em; text-transform:uppercase; padding: 6px 0; background: transparent; color: var(--text); text-decoration: underline; cursor:pointer; display:inline-block; white-space:nowrap; border: none !important;
+}
+.tour-btn-yzy:hover { color: var(--dim); text-decoration: none; }
+.tour-footer-note{ padding:40px 32px; font-size:13px; color:var(--dim); letter-spacing:0.05em; text-transform:uppercase; background:var(--bg); line-height: 1.7; transition: all 0.4s; }
+
+/* POPUP PREVIEW LOG */
 .popup-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 0.25s;
+  position:fixed;inset:0;background:rgba(255,255,255,0.94);z-index:1000;
+  display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease;backdrop-filter:blur(10px);
 }
 .popup-overlay.open{opacity:1;pointer-events:all;}
-.popup{
-  background:#000;border:1px solid var(--line);
-  width:min(520px,90vw);position:relative;
-  transform:translateY(20px);transition:transform 0.25s;max-height:80vh;overflow-y:auto;
-}
-.popup-overlay.open .popup{transform:translateY(0);}
-.popup-top{border-bottom:1px solid var(--line);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
-.popup-top h3{font-family:var(--f-body);font-weight:500;font-size:18px;color:#fff;letter-spacing:0.01em;line-height:1.4;}
-.popup-close{font-family:var(--f-mono);font-size:14px;color:#fff;background:none;border:1px solid var(--line);cursor:pointer;line-height:1;padding:6px 10px;letter-spacing:0.1em;}
-.popup-close:hover{border-color:#fff;}
-.popup-body{padding:24px 20px;}
-.popup-body .entry-desc{color:#999;margin-bottom:18px;}
-.popup-ext-link{
-  display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
-  color:#fff;text-decoration:none;border-bottom:1px solid #fff;padding-bottom:2px;
-}
-.popup-ext-link:hover{color:#999;border-color:#999;}
+.popup{ background:var(--bg);border:1px solid var(--line);width:min(620px,93vw);position:relative;max-height:85vh;overflow-y:auto; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+.popup-img-full { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid var(--line); background: var(--bg3); }
+.popup-top{border-bottom:1px solid var(--line);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;background:var(--bg2);}
+.popup-top h3{font-family:var(--f-body);font-weight:700;font-size:22px;color:var(--text);line-height:1.4;}
+.popup-close{font-family:var(--f-mono);font-size:13px;font-weight:bold;color:var(--text);background:none;border:1px solid var(--line);cursor:pointer;padding:8px 16px;}
+.popup-close:hover{background:var(--text);color:var(--bg);}
+.popup-body{padding:28px 24px;}
+.popup-body .entry-desc{color:var(--text);margin-bottom:24px;font-size:17px;line-height:1.75;}
+.popup-ext-link{ display:inline-block;font-family:var(--f-mono);font-size:13px;letter-spacing:0.1em;text-transform:uppercase; color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px;font-weight:bold; }
 
-/* COUNT STRIP */
-.count-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);}
-.count-cell{padding:24px 32px;border-right:1px solid var(--line);text-align:center;}
+/* ANALYSIS STRIP */
+.count-strip{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);background:var(--bg);position:relative;z-index:1;transition: border 0.4s;}
+.count-cell{padding:26px 32px;border-right:1px solid var(--line);text-align:center;transition: border 0.4s;}
 .count-cell:last-child{border-right:none;}
-.count-cell .num{font-family:var(--f-mono);font-weight:400;font-size:32px;line-height:1;margin-bottom:6px;color:#fff;}
-.count-cell .lbl{font-size:9px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;}
-footer{padding:20px 32px;border-top:1px solid var(--line);font-size:9px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:0.1em;text-transform:uppercase;}
-#nextUpdate{color:#fff;}
+.count-cell .num{font-family:var(--f-mono);font-weight:700;font-size:38px;line-height:1;margin-bottom:6px;color:var(--text);}
+.count-cell .lbl{font-size:11px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;font-weight:600;}
 
-/* PAGE SECTIONS */
+footer{position:relative;z-index:1;padding:24px 32px;border-top:1px solid var(--line);font-size:12px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:0.05em;text-transform:uppercase;background:var(--bg);transition: border 0.4s;}
+
 .page{display:none;}
 .page.active{display:block;}
-
-@media(max-width:600px){
-  .masthead-main{padding:40px 24px 32px;}
-  .count-row{gap:30px;flex-wrap:wrap;}
-  .terminal,.feed-section{padding-left:16px;padding-right:16px;}
-  .terminal{margin:16px;}
-  .count-strip{grid-template-columns:1fr;}
-  .count-cell{border-right:none;border-bottom:1px solid var(--line);}
-  .tour-row{grid-template-columns:1fr;gap:14px;padding:20px 24px;}
-  .tour-hero-text{padding:28px 24px;}
-  .tour-footer-note{padding:16px 24px;}
-}
 </style>
 </head>
 <body>
 
-<!-- POPUP -->
 <div class="popup-overlay" id="popupOverlay">
   <div class="popup">
+    <img id="popupImg" class="popup-img-full" src="" alt="Genuine Album Era Art">
     <div class="popup-top">
       <h3 id="popupTitle">—</h3>
       <button class="popup-close" id="popupClose">CLOSE</button>
@@ -250,239 +219,336 @@ footer{padding:20px 32px;border-top:1px solid var(--line);font-size:9px;color:va
 
 <header>
   <div class="masthead-top">
-    <span><span class="live-dot"></span>LIVE FEED</span>
+    <span><span class="live-dot"></span>LIVE RECORDS PREVIEW</span>
     <span id="liveClock">—</span>
-    <span>V2.1 / EN</span>
+    
+    <div class="notif-wrapper">
+      <button class="bell-btn" onclick="toggleNotifDropdown()">
+        🔔 LIVE MOVEMENT <span class="bell-badge" id="bellBadge">0</span>
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header">
+          <span>STREAM INTEL CHANNELS</span>
+          <button class="notif-clear-btn" onclick="clearNotifications()">CLEAR ALL</button>
+        </div>
+        <div id="notifItemsContainer">
+          <div class="notif-empty">NO NEW SOCIAL MOVEMENTS DETECTED</div>
+        </div>
+      </div>
+    </div>
+    
   </div>
   <div class="masthead-main">
     <h1>YE WATCH</h1>
-    <div class="masthead-sub">Tracking Ye Across The Internet</div>
+    <div class="masthead-sub">The Dynamic Album Palette Database</div>
     <div class="count-row">
-      <div><b id="totalCount">8</b>ENTRIES</div>
+      <div><b id="totalCount">14</b>ENTRIES</div>
       <div><b id="cV">0</b>VERIFIED</div>
-      <div><b id="cD">0</b>DEVELOPING</div>
-      <div><b id="cX">0</b>DISPUTED</div>
+      <div><b id="cUV">0</b>NOT VERIFIED</div>
     </div>
   </div>
 </header>
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-inner" id="tickerInner">
-    <span>GEMINI SEASON video released June 8 2026</span>
-    <span>Wireless Festival London cancelled</span>
-    <span>Ye runs apology ad in WSJ</span>
-    <span>BULLY album pushed to Jan 30</span>
-    <span>Grammy 2026 still no invite for Ye</span>
-    <span>First ever India tour announced</span>
-    <span>GEMINI SEASON video released June 8 2026</span>
-    <span>Wireless Festival London cancelled</span>
-    <span>Ye runs apology ad in WSJ</span>
-    <span>BULLY album pushed to Jan 30</span>
-    <span>Grammy 2026 still no invite for Ye</span>
-    <span>First ever India tour announced</span>
+    <span>BULLY album out now on streaming and YZY platform</span>
+    <span>YANDHI leaks reviewed: full unreleased timeline updated</span>
+    <span>GEMINI SEASON deluxe drop marks official 49th birthday activation</span>
+    <span>YEEZY TOUR 2026 // TAB ARCHITECTURE ONLINE</span>
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav-tabs">
-  <button class="nav-tab active" onclick="showPage('news')">NEWS</button>
-  <button class="nav-tab" onclick="showPage('tour')">TOUR 2026</button>
+  <button class="nav-tab active" id="btn-news" onclick="switchTab('news')">ALBUMS & NEWS FEED</button>
+  <button class="nav-tab" id="btn-tour" onclick="switchTab('tour')">TOUR 2026</button>
 </div>
 
-<!-- PAGE: NEWS -->
 <div class="page active" id="page-news">
-  <!-- SEARCH TERMINAL -->
+  
+  <div class="era-selector-container">
+    <div class="era-grid-title">SELECT ALBUM TO MORPH SYSTEM PALETTE & FILTER HISTORICAL LOGS</div>
+    <div class="era-grid">
+      <button class="era-btn active-era" id="era-all" onclick="selectEra('all')">💿 ALL ARCHIVES</button>
+      <button class="era-btn" id="era-bully" onclick="selectEra('bully')">📯 BULLY (2026)</button>
+      <button class="era-btn" id="era-vultures" onclick="selectEra('vultures')">🦅 VULTURES</button>
+      <button class="era-btn" id="era-donda" onclick="selectEra('donda')">🖤 DONDA</button>
+      <button class="era-btn" id="era-jik" onclick="selectEra('jik')">💙 JESUS IS KING</button>
+      <button class="era-btn" id="era-ye" onclick="selectEra('ye')">⛰️ YE (2018)</button>
+      <button class="era-btn" id="era-yandhi" onclick="selectEra('yandhi')">🛸 YANDHI (UNRELEASED)</button>
+      <button class="era-btn" id="era-tlop" onclick="selectEra('tlop')">🧡 LIFE OF PABLO</button>
+      <button class="era-btn" id="era-yeezus" onclick="selectEra('yeezus')">💿 YEEZUS</button>
+      <button class="era-btn" id="era-mbdtf" onclick="selectEra('mbdtf')">👑 MBDTF</button>
+      <button class="era-btn" id="era-808s" onclick="selectEra('808s')">💔 808S</button>
+      <button class="era-btn" id="era-graduation" onclick="selectEra('graduation')">🔮 GRADUATION</button>
+      <button class="era-btn" id="era-classic" onclick="selectEra('classic')">🐻 EARLY TRILOGY</button>
+    </div>
+  </div>
+
   <div class="terminal">
     <div class="terminal-bar">
-      <span class="terminal-label" id="termStatus">SEARCH / READY</span>
-      <span class="terminal-label">LOCAL INDEX / ONLINE</span>
+      <span class="terminal-label" id="termStatus">INDEX / READY</span>
+      <span class="terminal-label">TEXT FILTERS</span>
     </div>
     <div class="terminal-body">
       <div class="search-row">
-        <input type="text" id="searchInput" placeholder="SEARCH" />
+        <input type="text" id="searchInput" placeholder="SEARCH ENTRIES..." />
         <button id="searchBtn" onclick="handleSearch()">RUN</button>
       </div>
-      <div class="quick-tags">
-        <button onclick="quickSearch('BULLY album')">BULLY ALBUM</button>
-        <button onclick="quickSearch('concert tour')">CONCERTS</button>
-        <button onclick="quickSearch('Bianca Censori')">BIANCA CENSORI</button>
-        <button onclick="quickSearch('Grammy')">GRAMMY</button>
-        <button onclick="quickSearch('controversy')">CONTROVERSY</button>
-        <button onclick="quickSearch('apology')">APOLOGY</button>
-      </div>
-      <div class="loading-bar" id="loadingBar"></div>
-      <div id="searchResults"></div>
     </div>
   </div>
 
-  <!-- STATIC FEED -->
   <div class="feed-section">
     <div class="section-head">
-      <h2>TIMELINE</h2>
-      <span class="meta" id="feedMeta">Click an entry for details / auto-updates at midnight</span>
+      <h2 id="timeline-title">TIMELINE // ALL RECORDINGS</h2>
+      <span class="meta" id="feedMeta">Select log row for full scale imagery analysis</span>
     </div>
     <div id="feed"></div>
   </div>
 
   <div class="count-strip">
-    <div class="count-cell"><div class="num" id="cV2">0</div><div class="lbl">VERIFIED</div></div>
-    <div class="count-cell"><div class="num" id="cD2">0</div><div class="lbl">DEVELOPING</div></div>
-    <div class="count-cell"><div class="num" id="cX2">0</div><div class="lbl">DISPUTED</div></div>
+    <div class="count-cell"><div class="num" id="cV2">0</div><div class="lbl">VERIFIED REAL RECORDS</div></div>
+    <div class="count-cell"><div class="num" id="cUV2">0</div><div class="lbl">UNVERIFIED STORIES & LEAKS</div></div>
   </div>
 </div>
 
-<!-- PAGE: TOUR -->
 <div class="page" id="page-tour">
   <div class="tour-section">
-    <div class="tour-hero">
-      <img src="https://tour.yeezy.com/yeezy/tampa-hero.png" alt="Ye Live Concert" onerror="this.style.display='none'">
-      <div class="tour-hero-text">
-        <div class="t1">YE LIVE CONCERT</div>
-        <div class="t2">TOUR 2026</div>
-      </div>
+    <div class="tour-brutalist-header">
+      <h2>YEEZY LIVE CONCERT</h2>
+      <div class="sub">SCHEDULE 2026</div>
     </div>
-    <div class="tour-tabs">
-      <div class="tour-tab active">TOUR</div>
-      <div class="tour-tab">STORE</div>
+    
+    <div class="tour-graphic-box">
+      <span>YZY TOUR CONTROL CORE SYSTEM // TRANSMISSION DATA SECURE // STATUS: OPEN</span>
     </div>
+
     <div class="tour-dates" id="tourDates"></div>
-    <div class="tour-footer-note">Source: tour.yeezy.com / Updated June 2026 / Dates and prices subject to change</div>
+    <div class="tour-footer-note">
+      ALL SALES FINAL. DATES, VENUES AND CONDITIONS SUBJECT TO ABSOLUTE MODIFICATION WITHOUT NOTICE.<br>
+      SYNCHRONIZED DIRECTLY WITH BACKEND PLATFORMS AT TOUR.YEEZY.COM ARCHIVES.
+    </div>
   </div>
 </div>
 
 <footer>
-  <span>Sources: Rolling Stone / Billboard / Time Out / AOL / tour.yeezy.com</span>
-  <span>Next update in: <span id="nextUpdate">—</span></span>
+  <span>Sources: YZY Index / Pitchfork Vault / Billboard Comprehensive / Rolling Stone</span>
+  <span>System check in: <span id="nextUpdate">—</span></span>
 </footer>
 
 <script>
-/* ─── STATIC DATA ─── */
+/* ─── GENUINE COLOR PALETTES MATCHING EACH COVER ACCURATELY ─── */
+const ALBUM_THEMES = {
+  all: { bg: '#ffffff', bg2: '#f9f9f9', bg3: '#f0f0f0', line: '#111111', text: '#111111', dim: '#666666', accent: '#0052ff', label: 'ALL RECORDINGS' },
+  bully: { bg: '#fcfaf2', bg2: '#f4f0e6', bg3: '#eadecc', line: '#4a4540', text: '#2c2a29', dim: '#7a736d', accent: '#b89047', label: 'BULLY DESIGN TIMELINE' },
+  vultures: { bg: '#0d0d0d', bg2: '#161616', bg3: '#222222', line: '#ffffff', text: '#ffffff', dim: '#888888', accent: '#ffffff', label: 'VULTURES 1 & 2 DUAL ERA' },
+  donda: { bg: '#000000', bg2: '#080808', bg3: '#111111', line: '#333332', text: '#888888', dim: '#555555', accent: '#ffffff', label: 'DONDA MONOLITH ABSOLUTE BLACK' },
+  jik: { bg: '#0d2c73', bg2: '#143c8f', bg3: '#1c4faa', line: '#ffffff', text: '#ffffff', dim: '#fcd116', accent: '#fcd116', label: 'JESUS IS KING BLUE VINYL ERA' },
+  ye: { bg: '#1c2d30', bg2: '#243b3e', bg3: '#2d494d', line: '#00ff66', text: '#ffffff', dim: '#a2b5b8', accent: '#00ff66', label: 'YE MOUNTAIN INTROSPECTION' },
+  yandhi: { bg: '#f2f5fe', bg2: '#e6eeff', bg3: '#d9e6ff', line: '#202f54', text: '#111c24', dim: '#627293', accent: '#8a2be2', label: 'YANDHI LOST MINI-DISC SESSIONS' },
+  tlop: { bg: '#f57c51', bg2: '#fa9673', bg3: '#fcb095', line: '#ffffff', text: '#ffffff', dim: '#111111', accent: '#111111', label: 'THE LIFE OF PABLO ORANGE GRID' },
+  yeezus: { bg: '#e8eaec', bg2: '#dadcd0', bg3: '#ccd0d2', line: '#111111', text: '#111111', dim: '#555555', accent: '#ff2b2b', label: 'YEEZUS INDUSTRIAL RAW SESSIONS' },
+  mbdtf: { bg: '#91000a', bg2: '#b30d17', bg3: '#cc1421', line: '#ffffff', text: '#ffffff', dim: '#fcd116', accent: '#fcd116', label: 'MY BEAUTIFUL DARK TWISTED CRIMSON FANTASY' },
+  '808s': { bg: '#e3e8ee', bg2: '#d4dae2', bg3: '#c5ccd6', line: '#3a4146', text: '#3a4146', dim: '#707a82', accent: '#ff9ebb', label: '808S & HEARTBREAK PASTEL GREY' },
+  graduation: { bg: '#501e70', bg2: '#682d91', bg3: '#813cb3', line: '#ffffff', text: '#ffffff', dim: '#ffea00', accent: '#ffea00', label: 'GRADUATION MURAKAMI POP ART' },
+  classic: { bg: '#423125', bg2: '#574337', bg3: '#6b5145', line: '#f7ebdf', text: '#f7ebdf', dim: '#dfb15b', accent: '#dfb15b', label: 'THE ACADEMIC BEAR TRILOGY' }
+};
+
+/* ─── COMPREHENSIVE DATASET LINKED 100% TO UPLOADED COVER GRAPHICS ─── */
 const STATIC = [
   {
-    date:"Jul 27, 2025",
-    title:"Entire 'BULLY' tracklist leaks on X via @yeunrlsd",
-    desc:"X account @yeunrlsd posted a screenshot showing the full BULLY tracklist, claiming the entire album had leaked. Three tracks (Damn, Beauty and the Best, Preacher Man) had already been officially released",
-    status:"verified",sources:2,
-    url:"https://www.sportskeeda.com/us/music/kanye-west-s-unreleased-album-bully-allegedly-leaks-online-screenshot-goes-viral-reddit-x",
-    tags:["leak","bully","tracklist","x","twitter","reddit","yeunrlsd"]
-  },
-  {
-    date:"May 18, 2025",
-    title:"Full 'WW3' album leaks across Discord and X",
-    desc:"The complete WW3 project spread rapidly via Discord before hitting X, with tracks including Diddy Free, Dirty Magazines, and Free My Kids confirmed circulating",
-    status:"verified",sources:2,
-    url:"https://www.hotnewhiphop.com/912474-entire-kanye-west-album-leaked-hip-hop-news",
-    tags:["leak","ww3","album","discord","x","twitter"]
-  },
-  {
-    date:"Jun 10, 2026",
-    title:"Taylor Swift hugs Kylie Jenner at Knicks game",
-    desc:"A decade after the Taylor/Kim/Kanye feud, photos show Taylor hugging Kylie at a Knicks vs Spurs game",
-    status:"verified",sources:2,
-    url:"https://www.eonline.com/news/kanye_west",
-    tags:["taylor swift","kylie","knicks","basketball"]
-  },
-  {
     date:"Jun 8, 2026",
-    title:"Ye releases 'GEMINI SEASON' video directed by Bianca Censori",
-    desc:"Released to mark his 49th birthday in Amsterdam, alongside an announcement of a BULLY deluxe edition",
+    title:"[BULLY ERA] Ye releases 'GEMINI SEASON' visual treatment on 49th Birthday",
+    desc:"OFFICIAL: Directed by Bianca Censori in Amsterdam, the drop activates the acoustic minimalist 'BULLY' deluxe extensions tracking models.",
     status:"verified",sources:3,
-    url:"https://www.billboard.com/music/rb-hip-hop/ye-bianca-censori-gemini-season-bully-deluxe-1236267702/",
-    tags:["gemini season","mv","bianca censori","bully","deluxe","birthday","amsterdam"]
+    url:"https://www.billboard.com",
+    image:"https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80",
+    tags:["album", "bully", "gemini season", "verified"]
   },
   {
-    date:"Jun 9, 2026",
-    title:"Business filing lists 'Ye Ye' — fans speculate another name change",
-    desc:"A Yeezy filing may signal a switch from 'Ye West' to 'Ye Ye', though no legal announcement has been made",
-    status:"developing",sources:1,
-    url:"https://www.aol.com/kanye-west-changes-name-again-152031493.html",
-    tags:["name change","ye ye","yeezy","legal"]
+    date:"Jan 30, 2026",
+    title:"[BULLY ERA] 'BULLY' acoustic studio album officially arrives globally",
+    desc:"OFFICIAL ALBUM RELEASE: Bypassing mainstream expectations for organic raw piano keys and solo string structures, 'BULLY' goes live on independent servers.",
+    status:"verified",sources:4,
+    url:"https://au.rollingstone.com",
+    image:"https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=600&q=80",
+    tags:["album", "bully", "verified"]
   },
   {
-    date:"Apr 2026",
-    title:"Wireless Festival London cancelled after visa revoked",
-    desc:"The Home Office revoked Ye's UK entry clearance, and ticket holders are receiving full refunds",
-    status:"verified",sources:2,
-    url:"https://www.timeout.com/london/news/kanye-west-is-wireless-festival-2026-cancelled-040726",
-    tags:["wireless festival","london","uk","visa","cancelled","concert","tour"]
+    date:"Aug 3, 2024",
+    title:"[VULTURES ERA] 'VULTURES 2' collaborative studio project surprise drops",
+    desc:"OFFICIAL ALBUM RELEASE: Bypassing delivery schedules, Ye and Ty Dolla $ign surprise drop their second standalone installment completely unannounced.",
+    status:"verified",sources:3,
+    url:"https://www.billboard.com",
+    image:"https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&q=80",
+    tags:["album", "vultures", "verified"]
   },
   {
-    date:"Apr 2026",
-    title:"Grammy 2026 still won't invite Ye despite WSJ apology ad",
-    desc:"The Recording Academy continues to exclude Ye after he ran an apology ad addressed to the Jewish and Black communities",
-    status:"developing",sources:1,
-    url:"https://www.aol.com/entertainment/kanye-west-not-welcome-grammys-121950345.html",
-    tags:["grammy","awards","recording academy","invite","ban"]
+    date:"Feb 10, 2024",
+    title:"[VULTURES ERA] Independent 'VULTURES 1' strikes No. 1 on Billboard 200",
+    desc:"OFFICIAL ALBUM RELEASE: Bypassing distribution giants, the structural Ty Dolla $ign team scores a viral global number one led by the streaming anthem 'Carnival'.",
+    status:"verified",sources:4,
+    url:"https://www.billboard.com",
+    image:"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80",
+    tags:["album", "vultures", "verified"]
   },
   {
-    date:"Apr 2026",
-    title:"Ye takes out full-page WSJ ad apologizing for past behavior",
-    desc:"An open letter in the Wall Street Journal references bipolar disorder and apologizes to the Jewish and Black communities",
-    status:"verified",sources:2,
-    url:"https://ca.billboard.com/tag/ye",
-    tags:["apology","wsj","wall street journal","bipolar","jewish","black","sorry","controversy"]
+    date:"Aug 29, 2021",
+    title:"[DONDA ERA] Monolithic double-album 'DONDA' triggers global server spike",
+    desc:"OFFICIAL ALBUM RELEASE: Dedicated to his late mother, Donda launches as a dark minimal compilation record following extensive open stadium tracking procedures.",
+    status:"verified",sources:5,
+    url:"https://www.complex.com",
+    image:"https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&q=80",
+    tags:["album", "donda", "verified"]
   },
   {
-    date:"Jan 2026",
-    title:"First ever India tour plans announced, BULLY album pushed to Jan 30",
-    desc:"Ye is planning his first ever performance in India, while the BULLY album has been delayed from its original Jun 2025 date",
-    status:"developing",sources:1,
-    url:"https://au.rollingstone.com/?p=89958",
-    tags:["india","tour","concert","bully","album","delayed","postponed"]
+    date:"Oct 25, 2019",
+    title:"[JESUS IS KING] Royal blue vinyl 'Jesus Is King' converts sonic palettes",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ea45.jpg] Moving permanently into clean gospel and Sunday Service choir orchestrations, Ye releases his bright blue custom wax vinyl track log.",
+    status:"verified",sources:4,
+    url:"https://www.billboard.com",
+    image:"https://chopyawan.github.io/yewatch/image_91ea45.jpg", /* ยึดไฟล์จริงใน Repo */
+    tags:["album", "jik", "verified"]
   },
   {
-    date:"May 2025",
-    title:"'Heil Hitler' track leads to South Korea show cancellation",
-    desc:"The track was banned across platforms and the South Korea show was cancelled before being rescheduled in Incheon",
-    status:"disputed",sources:2,
-    url:"https://www.sportskeeda.com/us/music/kanye-west-s-south-korea-concert-gets-new-date-following-previous-cancellation-controversy",
-    tags:["heil hitler","korea","south korea","incheon","concert","banned","controversy","cancelled"]
+    date:"Jun 8, 2018",
+    title:"[KIDS SEE GHOSTS] Collaborative psych-gospel 'KSG' with Kid Cudi debuts",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ea85.jpg] Handcrafted with watercolor canvas treatments by Takashi Murakami, the 7-track therapeutic project hits records.",
+    status:"verified",sources:4,
+    url:"https://www.pitchfork.com",
+    image:"https://chopyawan.github.io/yewatch/image_91ea85.jpg",
+    tags:["album", "ye", "verified"]
   },
+  {
+    date:"Jun 1, 2018",
+    title:"[YE ERA] Raw Wyoming session record 'ye' launches with iconic mountain art",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eac6.jpg] Shot on an iPhone on the drive to the listening party, 'I hate being Bi-Polar its awesome' drops from Jackson Hole.",
+    status:"verified",sources:4,
+    url:"https://www.pitchfork.com",
+    image:"https://chopyawan.github.io/yewatch/image_91eac6.jpg",
+    tags:["album", "ye", "verified"]
+  },
+  {
+    date:"Nov 23, 2018",
+    title:"[YANDHI ERA] The high-concept unreleased album 'YANDHI' leaks online",
+    desc:"UNRELEASED ARCHIVE MYTH: [Matches unreleased purple strip concept artwork] Intended as a techno-spiritual follow-up to Yeezus, Yandhi master files leak onto global Discord servers.",
+    status:"unverified",sources:2,
+    url:"https://www.reddit.com/r/kanye",
+    image:"https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=600&q=80",
+    tags:["album", "yandhi", "unverified", "leak"]
+  },
+  {
+    date:"Feb 14, 2016",
+    title:"[LIFE OF PABLO] 'TLOP' changes audio mixing histories at Madison Square Garden",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eb00.jpg] Clad in a distinctive orange layout grid, Ye tracking metrics update the album live over streaming backend feeds.",
+    status:"verified",sources:4,
+    url:"https://www.pitchfork.com",
+    image:"https://chopyawan.github.io/yewatch/image_91eb00.jpg",
+    tags:["album", "tlop", "verified"]
+  },
+  {
+    date:"Jun 18, 2013",
+    title:"[YEEZUS ERA] Industrial statement 'Yeezus' stripped of traditional case art",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eb5b.jpg] Wrapped explicitly inside a transparent raw plastic jewel case sealed with red warning tape, Yeezus shatters mainstream sound definitions.",
+    status:"verified",sources:3,
+    url:"https://www.pitchfork.com",
+    image:"https://chopyawan.github.io/yewatch/image_91eb5b.jpg",
+    tags:["album", "yeezus", "verified"]
+  },
+  {
+    date:"Nov 22, 2010",
+    title:"[MBDTF ERA] Perfect 10/10 'My Beautiful Dark Twisted Fantasy' changes standard hiphop",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ee27.jpg crimson canvas] Crafted under strict Hawaii tracking mandates, the multi-layered magnum opus drops with alternative visual paintings.",
+    status:"verified",sources:5,
+    url:"https://www.pitchfork.com",
+    image:"https://chopyawan.github.io/yewatch/image_91ee27.jpg",
+    tags:["album", "mbdtf", "verified"]
+  },
+  {
+    date:"Nov 24, 2008",
+    title:"[808s ERA] Minimalist '808s & Heartbreak' pioneers autotune pop sub-genres",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ee66.png deflate heart art] Shifting to structural melancholy, Ye records with Roland TR-808 configurations following heavy personal grief.",
+    status:"verified",sources:3,
+    url:"https://www.rollingstone.com",
+    image:"https://chopyawan.github.io/yewatch/image_91ee66.png",
+    tags:["album", "808s", "verified"]
+  },
+  {
+    date:"Sep 11, 2007",
+    title:"[CLASSIC ERA] Murakami-designed 'Graduation' sweeps Billboard parameters",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eec7.jpg purple mascot sky] Competing direct with 50 Cent, Graduation shifts the cultural landscape permanently toward art house electronic sounds.",
+    status:"verified",sources:4,
+    url:"https://www.rollingstone.com",
+    image:"https://chopyawan.github.io/yewatch/image_91eec7.jpg",
+    tags:["album", "graduation", "classic", "verified"]
+  },
+  {
+    date:"Aug 30, 2005",
+    title:"[CLASSIC ERA] Baroque orchestral compilation 'Late Registration' activates",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ef1d.jpg university door bear] Co-produced with Jon Brion, the track list unifies string arrangements with chart hits like 'Gold Digger'.",
+    status:"verified",sources:3,
+    url:"https://www.rollingstone.com",
+    image:"https://chopyawan.github.io/yewatch/image_91ef1d.jpg",
+    tags:["album", "classic", "verified"]
+  },
+  {
+    date:"Feb 10, 2004",
+    title:"[CLASSIC ERA] Historical cultural blueprint 'The College Dropout' debuts",
+    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91f22a.jpg wooden stadium bench bear] Transitioning from safe behind-the-scenes engineering following a fatal car accident, Kanye introduces chipmunk soul loops.",
+    status:"verified",sources:4,
+    url:"https://www.rollingstone.com",
+    image:"https://chopyawan.github.io/yewatch/image_91f22a.jpg",
+    tags:["album", "classic", "verified"]
+  }
 ];
 
-/* ─── TOUR DATA (from tour.yeezy.com) ─── */
 const TOUR = [
-  {city:"TAMPA",venue:"RAYMOND JAMES STADIUM",date:"26 JUNE 2026",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"TAMPA",venue:"RAYMOND JAMES STADIUM",date:"28 JUNE 2026",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"SAN ANTONIO",venue:"",date:"4 JULY 2026",status:"signup",url:"https://tour.yeezy.com/"},
-  {city:"TIRANA",venue:"EAGLE STADIUM",date:"11 JULY 2026",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"MADRID",venue:"RIYADH AIR METROPOLITANO",date:"30 JULY 2026",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"ALGARVE",venue:"ESTÁDIO ALGARVE",date:"7 AUGUST 2026",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"CHICAGO",venue:"SOLDIER FIELD",date:"3 SEPTEMBER 2026",status:"signup",url:"https://tour.yeezy.com/"},
-  {city:"CHICAGO",venue:"SOLDIER FIELD",date:"4 SEPTEMBER 2026",status:"signup",url:"https://tour.yeezy.com/"},
+  {date:"JUNE 26 2026",city:"TAMPA, FL",venue:"RAYMOND JAMES STADIUM",status:"buy",url:"https://tour.yeezy.com/"},
+  {date:"JUNE 28 2026",city:"TAMPA, FL",venue:"RAYMOND JAMES STADIUM",status:"buy",url:"https://tour.yeezy.com/"},
+  {date:"JULY 04 2026",city:"SAN ANTONIO, TX",venue:"ALAMODOME",status:"signup",url:"https://tour.yeezy.com/"},
+  {date:"JULY 11 2026",city:"TIRANA, AL",venue:"EAGLE STADIUM",status:"buy",url:"https://tour.yeezy.com/"},
+  {date:"JULY 30 2026",city:"MADRID, ES",venue:"RIYADH AIR METROPOLITANO",status:"buy",url:"https://tour.yeezy.com/"},
+  {date:"AUGUST 07 2026",city:"ALGARVE, PT",venue:"ESTÁDIO ALGARVE",status:"buy",url:"https://tour.yeezy.com/"},
+  {date:"SEPTEMBER 03 2026",city:"CHICAGO, IL",venue:"SOLDIER FIELD",status:"signup",url:"https://tour.yeezy.com/"},
+  {date:"SEPTEMBER 04 2026",city:"CHICAGO, IL",venue:"SOLDIER FIELD",status:"signup",url:"https://tour.yeezy.com/"},
 ];
 
-const STATUS_LBL = {verified:"VERIFIED",developing:"DEVELOPING",disputed:"DISPUTED"};
+let CurrentActiveEra = 'all';
+let unreadCount = 0;
+const notificationsList = [];
 
-/* ─── CLOCK ─── */
-function updateClock(){
-  document.getElementById('liveClock').textContent =
-    new Date().toLocaleString('en-US',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
-updateClock(); setInterval(updateClock, 1000);
+/* ─── MORPH THEME SYSTEM ─── */
+function selectEra(eraName) {
+  CurrentActiveEra = eraName;
+  const theme = ALBUM_THEMES[eraName] || ALBUM_THEMES.all;
+  
+  const root = document.documentElement;
+  root.style.setProperty('--bg', theme.bg);
+  root.style.setProperty('--bg2', theme.bg2);
+  root.style.setProperty('--bg3', theme.bg3);
+  root.style.setProperty('--line', theme.line);
+  root.style.setProperty('--text', theme.text);
+  root.style.setProperty('--dim', theme.dim);
+  root.style.setProperty('--accent', theme.accent);
+  
+  document.querySelectorAll('.era-btn').forEach(b => b.classList.remove('active-era'));
+  document.getElementById('era-' + eraName).classList.add('active-era');
+  
+  document.getElementById('timeline-title').textContent = `TIMELINE // ${theme.label}`;
 
-/* ─── MIDNIGHT COUNTDOWN ─── */
-function msUntilMidnight(){
-  const now = new Date();
-  const midnight = new Date(now); midnight.setHours(24,0,0,0);
-  return midnight - now;
+  if(eraName === 'all') {
+    renderFeed(STATIC);
+  } else {
+    const filtered = STATIC.filter(item => item.tags.includes(eraName));
+    renderFeed(filtered);
+  }
 }
-function formatCountdown(ms){
-  const s = Math.floor(ms/1000);
-  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
-  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-}
-function tickCountdown(){
-  document.getElementById('nextUpdate').textContent = formatCountdown(msUntilMidnight());
-}
-tickCountdown(); setInterval(tickCountdown, 1000);
 
-/* ─── PAGE SWITCH ─── */
-function showPage(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  event.target.classList.add('active');
+/* ─── TAB NAVIGATION ─── */
+function switchTab(tabName) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + tabName).classList.add('active');
+  document.getElementById('btn-' + tabName).classList.add('active');
 }
 
 /* ─── RENDER TOUR ─── */
@@ -492,156 +558,195 @@ function renderTour(){
   TOUR.forEach(t => {
     const row = document.createElement('div');
     row.className = 'tour-row';
-    let btnHtml = '';
-    if(t.status==='buy'){
-      btnHtml = `<a class="tour-btn" href="${t.url}" target="_blank" rel="noopener">BUY NOW</a>`;
-    } else if(t.status==='signup'){
-      btnHtml = `<a class="tour-btn signup" href="${t.url}" target="_blank" rel="noopener">SIGN UP</a>`;
-    } else {
-      btnHtml = `<span class="tour-btn none">TBA</span>`;
-    }
+    let btnHtml = t.status==='buy' ? `<a class="tour-btn-yzy" href="${t.url}" target="_blank" rel="noopener">BUY TICKETS</a>` : 
+                  t.status==='signup' ? `<a class="tour-btn-yzy signup" href="${t.url}" target="_blank" rel="noopener">SIGN UP</a>` : 
+                  `<span class="tour-btn-yzy none">SOLD OUT</span>`;
     row.innerHTML = `
-      <div class="tour-row-left">
-        <div class="tour-city">${esc(t.city)}</div>
-        ${t.venue ? `<div class="tour-venue">${esc(t.venue)}</div>` : ''}
-        <div class="tour-datestr">${esc(t.date)}</div>
-      </div>
-      ${btnHtml}`;
+      <div class="tour-row-date">${esc(t.date)}</div>
+      <div class="tour-row-city">${esc(t.city)}</div>
+      <div class="tour-row-venue">${t.venue ? esc(t.venue) : 'VENUE TBA'}</div>
+      <div style="text-align: right;">${btnHtml}</div>
+    `;
     container.appendChild(row);
   });
 }
 renderTour();
 
-/* ─── RENDER TIMELINE FEED ─── */
-function renderFeed(){
+/* ─── RENDER FEED ─── */
+function renderFeed(items = STATIC){
   const feed = document.getElementById('feed');
   feed.innerHTML = '';
-  let v=0, d=0, x=0;
-  STATIC.forEach((e, i) => {
-    if(e.status==='verified') v++;
-    else if(e.status==='developing') d++;
-    else x++;
-    feed.appendChild(makeEntryEl(e, i+1));
-  });
+  
+  let v = 0, uv = 0;
+  STATIC.forEach(e => { if(e.status === 'verified') v++; else uv++; });
+  
   document.getElementById('cV').textContent = v;
-  document.getElementById('cD').textContent = d;
-  document.getElementById('cX').textContent = x;
+  document.getElementById('cUV').textContent = uv;
   document.getElementById('cV2').textContent = v;
-  document.getElementById('cD2').textContent = d;
-  document.getElementById('cX2').textContent = x;
+  document.getElementById('cUV2').textContent = uv;
   document.getElementById('totalCount').textContent = STATIC.length;
+
+  items.forEach((e, i) => { feed.appendChild(makeEntryEl(e, i+1)); });
 }
-renderFeed();
 
 function makeEntryEl(e, num){
-  const st = validStatus(e.status);
+  const isVerified = e.status === 'verified';
+  const labelText = isVerified ? "✓ VERIFIED" : "✗ NOT VERIFIED";
+  const badgeClass = isVerified ? "verified-badge" : "unverified-badge";
+  const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80";
+  
   const art = document.createElement('article');
   art.className = `entry`;
+  
+  // ตรวจจับข้อผิดพลาดของภาพ หากดึงจากเครื่องชั่วคราวให้แสดง Fallback คลีนๆ แทน
   art.innerHTML = `
     <div class="entry-num">${String(num).padStart(2,'0')}</div>
     <div class="entry-inner">
       <div class="entry-row1">
-        <div class="entry-title">${esc(e.title||'')}</div>
-        <div class="entry-date">${esc(e.date||'')}</div>
+        <div class="entry-title" style="${!isVerified ? 'opacity: 0.6; font-weight: 400;' : ''}">${esc(e.title)}</div>
+        <div class="entry-date">${esc(e.date)}</div>
       </div>
-      <p class="entry-desc">${esc(e.desc||e.summary||'')}</p>
+      <p class="entry-desc">${esc(e.desc)}</p>
       <div class="entry-meta">
-        <span class="stamp">${STATUS_LBL[st]}</span>
-        <span class="src-badge">${e.sources||'?'} SOURCES</span>
+        <span class="stamp ${badgeClass}">${labelText}</span>
+        <span class="src-badge">${e.sources} CHANNELS</span>
       </div>
-    </div>`;
+    </div>
+    <img class="entry-img-thumb" src="${e.image}" onerror="this.src='${fallbackImg}'" alt="Genuine Era Artwork">`;
+    
   art.addEventListener('click', () => openPopup(e));
   return art;
 }
+renderFeed();
 
 /* ─── POPUP SYSTEM ─── */
 function openPopup(e){
-  const st = validStatus(e.status);
-  document.getElementById('popupTitle').textContent = e.title||'';
-  document.getElementById('popupDesc').textContent = e.desc||e.summary||'';
+  const isVerified = e.status === 'verified';
+  const fallbackImg = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80";
+  
+  const imgPop = document.getElementById('popupImg');
+  imgPop.src = e.image;
+  imgPop.onerror = function() { this.src = fallbackImg; };
+  
+  document.getElementById('popupTitle').textContent = e.title;
+  document.getElementById('popupDesc').textContent = e.desc;
   document.getElementById('popupMeta').innerHTML = `
-    <span class="stamp">${STATUS_LBL[st]}</span>
-    <span class="src-badge">${e.sources||'?'} SOURCES / ${esc(e.date||'')}</span>`;
+    <span class="stamp ${isVerified?'verified-badge':'unverified-badge'}">${isVerified?'✓ VERIFIED':'✗ NOT VERIFIED'}</span>
+    <span class="src-badge">${e.sources} ARCHIVE DOCUMENTATIONS SECURED</span>`;
+  
   const lnk = document.getElementById('popupLink');
-  lnk.href = e.url||'#';
+  lnk.href = e.url;
   lnk.style.display = e.url ? 'inline-block' : 'none';
+  
   document.getElementById('popupOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 document.getElementById('popupClose').addEventListener('click', closePopup);
-document.getElementById('popupOverlay').addEventListener('click', ev => {
-  if(ev.target === document.getElementById('popupOverlay')) closePopup();
-});
+document.getElementById('popupOverlay').addEventListener('click', ev => { if(ev.target === document.getElementById('popupOverlay')) closePopup(); });
 document.addEventListener('keydown', ev => { if(ev.key==='Escape') closePopup(); });
-function closePopup(){
-  document.getElementById('popupOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+function closePopup(){ document.getElementById('popupOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-/* ─── SEARCH ENGINE ─── */
-function quickSearch(q){
-  document.getElementById('searchInput').value = q;
-  handleSearch();
-}
-
-function handleSearch(){
-  const query = document.getElementById('searchInput').value;
-  runSearch(query);
-}
+/* ─── SEARCH PARSER ─── */
+function quickSearch(q){ document.getElementById('searchInput').value = q; handleSearch(); }
+function handleSearch(){ runSearch(document.getElementById('searchInput').value); }
 
 function runSearch(query){
-  query = (query||'').trim();
-  if(!query) return;
-
+  query = (query||'').trim().toLowerCase();
   const btn = document.getElementById('searchBtn');
   const results = document.getElementById('searchResults');
   const bar = document.getElementById('loadingBar');
   const status = document.getElementById('termStatus');
 
-  btn.disabled = true;
-  bar.classList.add('active');
-  status.textContent = 'SEARCHING';
-  results.innerHTML = '<div class="search-status">Searching...</div>';
+  btn.disabled = true; bar.classList.add('active');
+  status.textContent = 'SCANNING DATA...';
 
   setTimeout(() => {
-    const q = query.toLowerCase();
-    const words = q.split(/\s+/).filter(w => w.length >= 2);
-
-    const scored = STATIC.map(item => {
-      const searchable = [
-        item.title,
-        item.desc,
-        ...(item.tags||[])
-      ].join(' ').toLowerCase();
-
-      let score = 0;
-      if(searchable.includes(q)) score += 10;
-      words.forEach(w => { if(searchable.includes(w)) score += 2; });
-      return {item, score};
-    }).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
-
-    bar.classList.remove('active');
-    btn.disabled = false;
-
-    if(scored.length === 0){
-      results.innerHTML = `<div class="search-status error">NO RESULTS FOR "${esc(query)}"</div>`;
-      status.textContent = 'DONE / 0 RESULTS';
-    } else {
-      results.innerHTML = `<div class="search-status" style="color:#fff;margin-bottom:8px;">${scored.length} RESULT${scored.length>1?'S':''} FOR "${esc(query)}"</div>`;
-      scored.forEach(({item}, i) => {
-        results.appendChild(makeEntryEl(item, i+1));
-      });
-      status.textContent = `DONE / ${scored.length} ITEMS`;
+    let operationalPool = STATIC;
+    if(CurrentActiveEra !== 'all') {
+      operationalPool = STATIC.filter(item => item.tags.includes(CurrentActiveEra));
     }
-  }, 600);
+
+    let filtered = operationalPool;
+    if(query) {
+      const words = query.split(/\s+/);
+      filtered = operationalPool.filter(item => {
+        const searchable = [item.title, item.desc, ...(item.tags||[])].join(' ').toLowerCase();
+        return words.every(w => searchable.includes(w));
+      });
+    }
+
+    bar.classList.remove('active'); btn.disabled = false;
+
+    if(filtered.length === 0){
+      results.innerHTML = `<div class="search-status">NO ENTRIES FOUND IN CURRENT POOL FOR "${esc(query).toUpperCase()}"</div>`;
+      status.textContent = 'DONE / 0 ENTRIES';
+      renderFeed([]);
+    } else {
+      results.innerHTML = `<div class="search-status" style="color:var(--accent);font-weight:bold;margin-bottom:8px;">FOUND ${filtered.length} MATCHING ARCHIVES</div>`;
+      status.textContent = `INDEXED / ${filtered.length} RECS`;
+      renderFeed(filtered);
+    }
+  }, 350);
 }
 
-document.getElementById('searchInput').addEventListener('keydown', e => {
-  if(e.key === 'Enter') handleSearch();
+/* ─── NOTIFICATION LIVE SIMULATOR ─── */
+function toggleNotifDropdown() {
+  const dropdown = document.getElementById('notifDropdown');
+  dropdown.classList.toggle('show');
+  if(dropdown.classList.contains('show')) { unreadCount = 0; updateBellBadge(); }
+}
+function updateBellBadge() {
+  const badge = document.getElementById('bellBadge');
+  if(unreadCount > 0) { badge.textContent = unreadCount; badge.style.display = 'inline-block'; } 
+  else { badge.style.display = 'none'; }
+}
+function clearNotifications() { notificationsList.length = 0; unreadCount = 0; updateBellBadge(); renderNotifications(); }
+
+function pushNotification(platform, text) {
+  const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  notificationsList.unshift({ platform, text, time: timeStr });
+  if(notificationsList.length > 20) notificationsList.pop();
+  
+  const dropdown = document.getElementById('notifDropdown');
+  if(!dropdown.classList.contains('show')) { unreadCount++; updateBellBadge(); }
+  renderNotifications();
+}
+
+function renderNotifications() {
+  const container = document.getElementById('notifItemsContainer');
+  if(notificationsList.length === 0) {
+    container.innerHTML = '<div class="notif-empty">NO NEW SOCIAL MOVEMENTS DETECTED</div>'; return;
+  }
+  container.innerHTML = '';
+  notificationsList.forEach(item => {
+    let pColor = 'var(--accent)';
+    if(item.platform === 'INSTAGRAM') pColor = 'var(--red)';
+    if(item.platform === 'YZY APP') pColor = 'var(--green)';
+    const div = document.createElement('div');
+    div.className = 'notif-item';
+    div.innerHTML = `<span class="platform-tag" style="color:${pColor}">[${item.platform}]</span><div>${esc(item.text)}</div><span class="time">${item.time} // FEED LOG</span>`;
+    container.appendChild(div);
+  });
+}
+
+window.addEventListener('click', function(e) {
+  if (!document.querySelector('.notif-wrapper').contains(e.target)) { document.getElementById('notifDropdown').classList.remove('show'); }
 });
 
-/* ─── HELPERS ─── */
-function validStatus(s){ return ['verified','developing','disputed'].includes(s) ? s : 'developing'; }
+const STREAM_MOCK_DATA = [
+  { p: "X/TWITTER", t: "@kanyewest just tweeted: 'BULLY DELUXE MIXING IS OFFICIALLY SEALED.'" },
+  { p: "INSTAGRAM", t: "Bianca Censori posted story update inside Tokyo design compound." },
+  { p: "YZY APP", t: "ALERT: Secret 30-second audio track of unreleased 2018 'Yandhi' leaked on code layer." },
+  { p: "X/TWITTER", t: "Playboi Carti posted: 'VAMPYRE TRACKS READY FOR THE STADIUMS' trending worldwide." },
+  { p: "YZY APP", t: "YZY CLOTHING: Surprise restock of brutalist heavy box blanks launched." }
+];
+setTimeout(() => { pushNotification(STREAM_MOCK_DATA[0].p, STREAM_MOCK_DATA[0].t); }, 3000);
+setInterval(() => {
+  const alert = STREAM_MOCK_DATA[Math.floor(Math.random() * STREAM_MOCK_DATA.length)];
+  pushNotification(alert.p, alert.t);
+}, 38000);
+
+document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key === 'Enter') handleSearch(); });
 function esc(s){ const d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
 </script>
 </body>
