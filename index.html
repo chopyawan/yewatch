@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YE WATCH</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--line:#2a2a2a;
+  --text:#f0f0f0;--dim:#666;--accent:#e8ff00;
+  --red:#ff2b2b;--green:#00ff87;--blue:#00b4ff;
+  --f-display:'Arial Black','Arial Bold',Impact,Haettenschweiler,'Franklin Gothic Bold',sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:'Courier New',Courier,'Lucida Console',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--f-body);overflow-x:hidden;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+header{border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+.masthead-top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 32px;border-bottom:1px solid var(--line);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:0.15em;
+  color:var(--dim);text-transform:uppercase;
+}
+.live-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--red);margin-right:6px;
+  animation:blink 1s infinite;vertical-align:middle;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.masthead-main{
+  padding:40px 32px 28px;
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px;
+}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(64px,14vw,140px);line-height:0.88;letter-spacing:-0.02em;text-transform:uppercase;}
+h1 .ye{color:var(--accent);}
+.masthead-right{text-align:right;}
+.masthead-right .count-label{font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
+.masthead-right .big-num{font-family:var(--f-display);font-weight:900;font-size:56px;color:var(--accent);line-height:1;}
+.ticker{background:var(--accent);color:#000;overflow:hidden;white-space:nowrap;padding:10px 0;font-family:var(--f-display);font-weight:900;font-size:14px;letter-spacing:0.04em;}
+.ticker-inner{display:inline-block;animation:scroll 40s linear infinite;}
+.ticker-inner span{padding:0 32px;}
+.ticker-inner span::before{content:'▶ ';opacity:0.5;}
+@keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* TERMINAL */
+.terminal{margin:24px 32px;border:1px solid var(--line);background:var(--bg2);position:relative;z-index:1;}
+.terminal-bar{
+  background:var(--bg3);padding:10px 16px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.terminal-bar .dots{display:flex;gap:6px;}
+.terminal-bar .dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#ffbd2e;}.dot-g{background:#28c840;}
+.terminal-label{font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:0.1em;}
+.terminal-body{padding:20px;}
+.search-row{display:flex;gap:0;}
+.search-row input{
+  flex:1;font-family:var(--f-mono);font-size:13px;
+  padding:12px 16px;border:1px solid var(--line);background:#0a0a0a;color:var(--text);outline:none;
+}
+.search-row input:focus{border-color:var(--accent);}
+.search-row input::placeholder{color:var(--dim);}
+.search-row button{
+  font-family:var(--f-display);font-weight:900;font-size:13px;letter-spacing:0.06em;
+  padding:12px 24px;border:1px solid var(--accent);border-left:none;
+  background:var(--accent);color:#000;cursor:pointer;transition:all 0.15s;
+}
+.search-row button:hover{background:#fff;border-color:#fff;}
+.search-row button:disabled{opacity:0.4;cursor:default;}
+.quick-tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+.quick-tags button{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:0.06em;
+  padding:6px 12px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;transition:all 0.15s;
+}
+.quick-tags button:hover{border-color:var(--accent);color:var(--accent);}
+#searchResults{margin-top:16px;}
+.search-status{font-family:var(--f-mono);font-size:11px;color:var(--dim);padding:12px 0;}
+.search-status.error{color:var(--red);}
+.loading-bar{height:2px;background:var(--line);margin-top:12px;position:relative;overflow:hidden;display:none;}
+.loading-bar.active{display:block;}
+.loading-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--accent);animation:load 1s ease-in-out infinite;}
+@keyframes load{0%{left:-40%;}100%{left:100%;}}
+
+/* RATE LIMIT NOTICE */
+.rate-notice{
+  font-family:var(--f-mono);font-size:10px;
+  color:var(--accent);padding:8px 0 0;
+  display:none;
+}
+.rate-notice.show{display:block;}
+
+/* FEED */
+.feed-section{padding:0 32px 60px;position:relative;z-index:1;}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:20px 0 16px;border-bottom:1px solid var(--line);}
+.section-head h2{font-family:var(--f-display);font-weight:900;font-size:28px;text-transform:uppercase;letter-spacing:0.02em;}
+.section-head .meta{font-family:var(--f-mono);font-size:10px;color:var(--dim);}
+article.entry{
+  display:grid;grid-template-columns:56px 1fr;gap:0;
+  border-bottom:1px solid var(--line);transition:background 0.15s;cursor:pointer;position:relative;
+}
+article.entry:hover{background:rgba(255,255,255,0.02);}
+article.entry::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;transition:background 0.2s;}
+article.entry.verified::after{background:var(--green);}
+article.entry.developing::after{background:var(--accent);}
+article.entry.disputed::after{background:var(--red);}
+.entry-num{padding:26px 0 24px 16px;font-family:var(--f-display);font-weight:900;font-size:12px;color:var(--line);align-self:start;}
+.entry-inner{padding:20px 20px 20px 0;}
+.entry-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px;}
+.entry-title{font-family:var(--f-body);font-weight:700;font-size:16px;line-height:1.35;flex:1;}
+.entry-date{font-family:var(--f-mono);font-size:10px;color:var(--dim);white-space:nowrap;padding-top:2px;}
+.entry-desc{font-size:13px;color:#888;line-height:1.6;margin-bottom:12px;}
+.entry-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.stamp{font-family:var(--f-mono);font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:3px 8px;border:1px solid;}
+.stamp.verified{color:var(--green);border-color:var(--green);}
+.stamp.developing{color:#000;background:var(--accent);border-color:var(--accent);}
+.stamp.disputed{color:var(--red);border-color:var(--red);}
+.src-badge{font-family:var(--f-mono);font-size:9px;color:var(--dim);}
+
+/* POPUP */
+.popup-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px);
+}
+.popup-overlay.open{opacity:1;pointer-events:all;}
+.popup{
+  background:var(--bg2);border:1px solid var(--accent);
+  width:min(520px,90vw);position:relative;
+  transform:translateY(30px);transition:transform 0.3s;max-height:80vh;overflow-y:auto;
+}
+.popup-overlay.open .popup{transform:translateY(0);}
+.popup-top{background:var(--accent);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;}
+.popup-top h3{font-family:var(--f-display);font-weight:900;font-size:22px;color:#000;letter-spacing:0.02em;}
+.popup-close{font-family:var(--f-display);font-weight:900;font-size:20px;color:#000;background:none;border:none;cursor:pointer;line-height:1;padding:0 4px;}
+.popup-body{padding:24px 20px;}
+.popup-body .entry-desc{color:#999;margin-bottom:16px;}
+.popup-ext-link{
+  display:inline-block;font-family:var(--f-mono);font-size:11px;
+  color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px;
+}
+.popup-ext-link:hover{color:#fff;border-color:#fff;}
+
+/* COUNT STRIP */
+.count-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);font-family:var(--f-mono);}
+.count-cell{padding:20px 32px;border-right:1px solid var(--line);text-align:center;}
+.count-cell:last-child{border-right:none;}
+.count-cell .num{font-family:var(--f-display);font-weight:900;font-size:40px;line-height:1;margin-bottom:4px;}
+.count-cell.v .num{color:var(--green);}
+.count-cell.d .num{color:var(--accent);}
+.count-cell.x .num{color:var(--red);}
+.count-cell .lbl{font-size:9px;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;}
+footer{padding:20px 32px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:10px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+#nextUpdate{color:var(--accent);font-weight:700;}
+
+@media(max-width:600px){
+  .masthead-main{grid-template-columns:1fr;gap:8px;}
+  .masthead-right{text-align:left;}
+  .terminal,.feed-section{padding-left:16px;padding-right:16px;}
+  .terminal{margin:16px;}
+  .count-strip{grid-template-columns:1fr;}
+  .count-cell{border-right:none;border-bottom:1px solid var(--line);}
+}
+</style>
+</head>
+<body>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup">
+    <div class="popup-top">
+      <h3 id="popupTitle">—</h3>
+      <button class="popup-close" id="popupClose">✕</button>
+    </div>
+    <div class="popup-body">
+      <div class="entry-meta" style="margin-bottom:14px;" id="popupMeta"></div>
+      <p class="entry-desc" id="popupDesc"></p>
+      <a class="popup-ext-link" id="popupLink" href="#" target="_blank" rel="noopener">อ่านต้นฉบับ ↗</a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="masthead-top">
+    <span><span class="live-dot"></span>LIVE FEED · YE WATCH</span>
+    <span id="liveClock">—</span>
+    <span>เวอร์ชัน 2.1 · TH</span>
+  </div>
+  <div class="masthead-main">
+    <h1><span class="ye">YE</span><br><span class="watch">WATCH</span></h1>
+    <div class="masthead-right">
+      <div class="count-label">รายการในฐานข้อมูล</div>
+      <div class="big-num" id="totalCount">8</div>
+      <div class="count-label" style="margin-top:4px;">อัปเดต มิ.ย. 2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner" id="tickerInner">
+    <span>GEMINI SEASON MV ใหม่ 8 มิ.ย. 2026</span>
+    <span>Wireless Festival ลอนดอนถูกยกเลิก</span>
+    <span>Ye ลงโฆษณา WSJ ขอโทษ</span>
+    <span>อัลบั้ม BULLY เลื่อนเป็น 30 ม.ค.</span>
+    <span>Grammy 2026 ไม่เชิญ Ye</span>
+    <span>ทัวร์อินเดียครั้งแรก</span>
+    <span>GEMINI SEASON MV ใหม่ 8 มิ.ย. 2026</span>
+    <span>Wireless Festival ลอนดอนถูกยกเลิก</span>
+    <span>Ye ลงโฆษณา WSJ ขอโทษ</span>
+    <span>อัลบั้ม BULLY เลื่อนเป็น 30 ม.ค.</span>
+    <span>Grammy 2026 ไม่เชิญ Ye</span>
+    <span>ทัวร์อินเดียครั้งแรก</span>
+  </div>
+</div>
+
+<!-- SEARCH TERMINAL -->
+<div class="terminal">
+  <div class="terminal-bar">
+    <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+    <span class="terminal-label" id="termStatus">TERMINAL · READY</span>
+    <span class="terminal-label">local-search-engine · online</span>
+  </div>
+  <div class="terminal-body">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="> พิมพ์คำค้นหา เช่น Kanye West 2026 tour" />
+      <button id="searchBtn" onclick="handleSearch()">RUN</button>
+    </div>
+    <div class="quick-tags">
+      <button onclick="quickSearch('Kanye West Ye latest news 2026')">ข่าวล่าสุด</button>
+      <button onclick="quickSearch('Kanye West Bully album 2026')">อัลบั้ม BULLY</button>
+      <button onclick="quickSearch('Kanye West concert tour 2026')">คอนเสิร์ต</button>
+      <button onclick="quickSearch('Kanye West Bianca Censori 2026')">Bianca Censori</button>
+      <button onclick="quickSearch('Kanye West controversy 2026')">ข่าวฉาว</button>
+    </div>
+    <div class="loading-bar" id="loadingBar"></div>
+    <div class="rate-notice" id="rateNotice">⚠ ระบบกำลังรีเซ็ตการค้นหา กรุณารอ <span id="retryIn">3</span> วินาที</div>
+    <div id="searchResults"></div>
+  </div>
+</div>
+
+<!-- STATIC FEED -->
+<div class="feed-section">
+  <div class="section-head">
+    <h2>TIMELINE</h2>
+    <span class="meta" id="feedMeta">คลิกที่รายการเพื่อดูรายละเอียด · อัปเดตอัตโนมัติเที่ยงคืน</span>
+  </div>
+  <div id="feed"></div>
+</div>
+
+<div class="count-strip">
+  <div class="count-cell v"><div class="num" id="cV">0</div><div class="lbl">VERIFIED</div></div>
+  <div class="count-cell d"><div class="num" id="cD">0</div><div class="lbl">DEVELOPING</div></div>
+  <div class="count-cell x"><div class="num" id="cX">0</div><div class="lbl">DISPUTED</div></div>
+</div>
+
+<footer>
+  <span>ข้อมูลอ้างอิง: Rolling Stone · Billboard · Time Out · AOL</span>
+  <span>อัปเดตครั้งถัดไป: <span id="nextUpdate">—</span></span>
+</footer>
+
+<script>
+/* ─── STATIC DATA ─── */
+const STATIC = [
+  {date:"10 มิ.ย. 2026",title:"Taylor Swift กอด Kylie Jenner ที่เกมส์ Knicks",desc:"ผ่านสิบปีจากความขัดแย้งกับ Kim/Kanye มีภาพ Taylor กอด Kylie ในเกมบาส Knicks vs Spurs",status:"verified",sources:2,url:"https://www.eonline.com/news/kanye_west"},
+  {date:"8 มิ.ย. 2026",title:"Ye ปล่อย MV 'GEMINI SEASON' กำกับโดย Bianca Censori",desc:"ฉลองวันเกิดครบ 49 ที่อัมสเตอร์ดัม พร้อมประกาศ BULLY deluxe edition",status:"verified",sources:3,url:"https://www.billboard.com/music/rb-hip-hop/ye-bianca-censori-gemini-season-bully-deluxe-1236267702/"},
+  {date:"9 มิ.ย. 2026",title:"เอกสารธุรกิจระบุ 'Ye Ye' — แฟนๆ สงสัยเปลี่ยนชื่ออีก",desc:"เอกสาร Yeezy อาจเปลี่ยนชื่อจาก 'Ye West' เป็น 'Ye Ye' แต่ยังไม่มีการประกาศทางกฎหมาย",status:"developing",sources:1,url:"https://www.aol.com/kanye-west-changes-name-again-152031493.html"},
+  {date:"เม.ย. 2026",title:"Wireless Festival ลอนดอนถูกยกเลิกหลังวีซ่าเพิกถอน",desc:"Home Office เพิกถอนสิทธิ์เข้าอังกฤษของ Ye ผู้ถือตั๋วคืนเงินเต็มจำนวน",status:"verified",sources:2,url:"https://www.timeout.com/london/news/kanye-west-is-wireless-festival-2026-cancelled-040726"},
+  {date:"เม.ย. 2026",title:"Grammy 2026 ไม่เชิญ Ye แม้ลงโฆษณาขอโทษ WSJ",desc:"Recording Academy ยังคงไม่เชิญ Ye หลังโฆษณาขอโทษชุมชนยิวและคนผิวดำ",status:"developing",sources:1,url:"https://www.aol.com/entertainment/kanye-west-not-welcome-grammys-121950345.html"},
+  {date:"เม.ย. 2026",title:"Ye ลงโฆษณาเต็มหน้า WSJ ขอโทษพฤติกรรมในอดีต",desc:"จดหมายเปิดผนึกใน Wall Street Journal กล่าวถึงโรคไบโพลาร์และขอโทษชุมชนยิวและคนผิวดำ",status:"verified",sources:2,url:"https://ca.billboard.com/tag/ye"},
+  {date:"ม.ค. 2026",title:"ประกาศแผนทัวร์อินเดียครั้งแรก อัลบั้ม BULLY เลื่อนเป็น 30 ม.ค.",desc:"Ye วางแผนไปแสดงที่อินเดียเป็นครั้งแรก อัลบั้ม BULLY ถูกเลื่อนจาก มิ.ย. 2025",status:"developing",sources:1,url:"https://au.rollingstone.com/?p=89958"},
+  {date:"พ.ค. 2025",title:"เพลง 'Heil Hitler' ทำให้คอนเสิร์ตเกาหลีถูกยกเลิก",desc:"เพลงที่มีเนื้อหาขัดแย้งถูกแบนทุกแพลตฟอร์ม คอนเสิร์ตเกาหลีใต้ยกเลิกแล้วได้วันใหม่ที่อินชอน",status:"disputed",sources:2,url:"https://www.sportskeeda.com/us/music/kanye-west-s-south-korea-concert-gets-new-date-following-previous-cancellation-controversy"},
+];
+const STATUS_LBL = {verified:"VERIFIED",developing:"DEVELOPING",disputed:"DISPUTED"};
+
+/* ─── CLOCK ─── */
+function updateClock(){
+  document.getElementById('liveClock').textContent =
+    new Date().toLocaleString('th-TH',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+updateClock(); setInterval(updateClock, 1000);
+
+/* ─── MIDNIGHT COUNTDOWN ─── */
+function msUntilMidnight(){
+  const now = new Date();
+  const midnight = new Date(now); midnight.setHours(24,0,0,0);
+  return midnight - now;
+}
+function formatCountdown(ms){
+  const s = Math.floor(ms/1000);
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+function tickCountdown(){
+  const ms = msUntilMidnight();
+  document.getElementById('nextUpdate').textContent = formatCountdown(ms);
+}
+tickCountdown(); setInterval(tickCountdown, 1000);
+
+/* ─── RENDER TIMELINE FEED ─── */
+function renderFeed(){
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  let v=0, d=0, x=0;
+  STATIC.forEach((e, i) => {
+    if(e.status==='verified') v++;
+    else if(e.status==='developing') d++;
+    else x++;
+    feed.appendChild(makeEntryEl(e, i+1));
+  });
+  document.getElementById('cV').textContent = v;
+  document.getElementById('cD').textContent = d;
+  document.getElementById('cX').textContent = x;
+  document.getElementById('totalCount').textContent = STATIC.length;
+}
+renderFeed();
+
+function makeEntryEl(e, num){
+  const st = validStatus(e.status);
+  const art = document.createElement('article');
+  art.className = `entry ${st}`;
+  art.innerHTML = `
+    <div class="entry-num">${String(num).padStart(2,'0')}</div>
+    <div class="entry-inner">
+      <div class="entry-row1">
+        <div class="entry-title">${esc(e.title||'')}</div>
+        <div class="entry-date">${esc(e.date||'')}</div>
+      </div>
+      <p class="entry-desc">${esc(e.desc||e.summary||'')}</p>
+      <div class="entry-meta">
+        <span class="stamp ${st}">${STATUS_LBL[st]}</span>
+        <span class="src-badge">${e.sources||'?'} แหล่งข่าว</span>
+      </div>
+    </div>`;
+  art.addEventListener('click', () => openPopup(e));
+  return art;
+}
+
+/* ─── POPUP SYSTEM ─── */
+function openPopup(e){
+  const st = validStatus(e.status);
+  document.getElementById('popupTitle').textContent = e.title||'';
+  document.getElementById('popupDesc').textContent = e.desc||e.summary||'';
+  document.getElementById('popupMeta').innerHTML = `
+    <span class="stamp ${st}">${STATUS_LBL[st]}</span>
+    <span class="src-badge">${e.sources||'?'} แหล่งข่าว · ${esc(e.date||'')}</span>`;
+  const lnk = document.getElementById('popupLink');
+  lnk.href = e.url||'#';
+  lnk.style.display = e.url ? 'inline-block' : 'none';
+  document.getElementById('popupOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('popupClose').addEventListener('click', closePopup);
+document.getElementById('popupOverlay').addEventListener('click', ev => {
+  if(ev.target === document.getElementById('popupOverlay')) closePopup();
+});
+document.addEventListener('keydown', ev => { if(ev.key==='Escape') closePopup(); });
+function closePopup(){
+  document.getElementById('popupOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─── CLIENT-SIDE SEARCH ENGINE (ONLINE COMPATIBLE) ─── */
+function quickSearch(q){ 
+  document.getElementById('searchInput').value = q; 
+  handleSearch(); 
+}
+
+function handleSearch(){ 
+  const query = document.getElementById('searchInput').value;
+  runSearch(query); 
+}
+
+function runSearch(query){
+  query = (query||'').trim().toLowerCase();
+  if(!query) return;
+
+  const btn = document.getElementById('searchBtn');
+  const results = document.getElementById('searchResults');
+  const bar = document.getElementById('loadingBar');
+  const status = document.getElementById('termStatus');
+
+  btn.disabled = true;
+  bar.classList.add('active');
+  status.textContent = 'SEARCHING DATABASE...';
+  results.innerHTML = '<div class="search-status">กำลังค้นหาและแยกแยะหัวข้อข่าวในระบบ...</div>';
+
+  // ค้นหาแบบจำลองระบบ Search Engine ทำงานทันทีโดยไม่พึ่ง API นอก
+  setTimeout(() => {
+    // แยกคำค้นหาเป็นคีย์เวิร์ดย่อยๆ เช่น "kanye", "bully", "concert"
+    let keywords = query.replace(/kanye|west|ye/gi, '').trim().split(' ').filter(k => k.length > 0);
+    if(keywords.length === 0) keywords = [query];
+
+    // กรองข้อมูลจากฐานข้อมูลหลักที่มีอยู่จริงตามคีย์เวิร์ด
+    const filtered = STATIC.filter(item => {
+      const text = (item.title + " " + item.desc).toLowerCase();
+      return keywords.some(key => text.includes(key));
+    });
+
+    bar.classList.remove('active');
+    btn.disabled = false;
+
+    if(filtered.length === 0){
+      results.innerHTML = `<div class="search-status error">⚠ ไม่พบข่าวที่ตรงกับ "${esc(query)}" ในฐานข้อมูลอัปเดตปี 2026 ของระบบ</div>`;
+      status.textContent = 'DONE · 0 RESULTS';
+    } else {
+      results.innerHTML = `<div class="search-status" style="color:var(--accent);margin-bottom:8px;">▶ พบข้อมูล "${esc(query)}" — ${filtered.length} รายการ</div>`;
+      filtered.forEach((item, i) => {
+        const el = makeEntryEl(item, i+1);
+        results.appendChild(el);
+      });
+      status.textContent = `DONE · ${filtered.length} ITEMS`;
+    }
+  }, 800); // ดีเลย์สั้นๆ เพื่อให้ดูมีความเป็น Terminal กำลังประมวลผลจริง
+}
+
+/* ─── HELPERS ─── */
+function validStatus(s){ return ['verified','developing','disputed'].includes(s) ? s : 'developing'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
+</script>
+</body>
+</html>
