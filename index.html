@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,235 +7,225 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--line:#2a2a2a;
-  --text:#f0f0f0;--dim:#666;--accent:#e8ff00;
-  --red:#ff2b2b;--green:#00ff87;--blue:#00b4ff;
-  --f-display:'Arial Black','Arial Bold',Impact,Haettenschweiler,'Franklin Gothic Bold',sans-serif;
-  --f-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --bg:#000;--bg2:#000;--bg3:#0d0d0d;--line:#222;
+  --text:#fff;--dim:#666;--accent:#fff;
+  --green:#888;--red:#888;
   --f-mono:'Courier New',Courier,'Lucida Console',monospace;
+  --f-body:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;
 }
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:var(--f-body);overflow-x:hidden;}
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:0;opacity:0.4;
-}
-header{border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--f-mono);}
+
+header{border-bottom:1px solid var(--line);}
 .masthead-top{
   display:flex;justify-content:space-between;align-items:center;
-  padding:10px 32px;border-bottom:1px solid var(--line);
-  font-family:var(--f-mono);font-size:10px;letter-spacing:0.15em;
-  color:var(--dim);text-transform:uppercase;
+  padding:8px 32px;border-bottom:1px solid var(--line);
+  font-size:10px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;
 }
 .live-dot{
   display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--red);margin-right:6px;
-  animation:blink 1s infinite;vertical-align:middle;
+  background:var(--text);margin-right:6px;
+  animation:blink 1.4s infinite;vertical-align:middle;
 }
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.15;}}
 .masthead-main{
-  padding:40px 32px 28px;
-  display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px;
+  padding:60px 32px 40px;text-align:center;
 }
-h1{font-family:var(--f-display);font-weight:900;font-size:clamp(64px,14vw,140px);line-height:0.88;letter-spacing:-0.02em;text-transform:uppercase;}
-h1 .ye{color:var(--accent);}
-.masthead-right{text-align:right;}
-.masthead-right .count-label{font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
-.masthead-right .big-num{font-family:var(--f-display);font-weight:900;font-size:56px;color:var(--accent);line-height:1;}
-.ticker{background:var(--accent);color:#000;overflow:hidden;white-space:nowrap;padding:10px 0;font-family:var(--f-display);font-weight:900;font-size:14px;letter-spacing:0.04em;}
+h1{
+  font-family:var(--f-mono);font-weight:400;font-size:clamp(40px,9vw,90px);
+  line-height:1;letter-spacing:0.05em;text-transform:uppercase;
+}
+.masthead-sub{
+  font-size:13px;letter-spacing:0.4em;text-transform:uppercase;color:var(--dim);margin-top:18px;
+}
+.count-row{
+  margin-top:30px;display:flex;justify-content:center;gap:60px;
+  font-size:10px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;
+}
+.count-row b{display:block;font-size:24px;color:var(--text);font-weight:400;margin-bottom:4px;}
+
+.ticker{background:#fff;color:#000;overflow:hidden;white-space:nowrap;padding:10px 0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;}
 .ticker-inner{display:inline-block;animation:scroll 40s linear infinite;}
 .ticker-inner span{padding:0 32px;}
-.ticker-inner span::before{content:'▶ ';opacity:0.5;}
+.ticker-inner span::before{content:'— ';opacity:0.4;}
 @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
 /* NAV TABS */
-.nav-tabs{display:flex;border-bottom:1px solid var(--line);background:var(--bg2);position:relative;z-index:1;}
+.nav-tabs{display:flex;justify-content:center;border-bottom:1px solid var(--line);gap:48px;background:var(--bg2);}
 .nav-tab{
-  font-family:var(--f-display);font-weight:900;font-size:12px;letter-spacing:0.1em;
-  text-transform:uppercase;padding:14px 28px;cursor:pointer;color:var(--dim);
-  border-bottom:2px solid transparent;transition:all 0.15s;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:0.25em;
+  text-transform:uppercase;padding:18px 0;cursor:pointer;color:var(--dim);
+  border-bottom:1px solid transparent;transition:color 0.15s;background:none;border-top:none;border-left:none;border-right:none;
 }
-.nav-tab:hover{color:var(--text);}
-.nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.nav-tab:hover{color:#aaa;}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--text);}
 
-/* TERMINAL */
-.terminal{margin:24px 32px;border:1px solid var(--line);background:var(--bg2);position:relative;z-index:1;}
+/* TERMINAL / SEARCH */
+.terminal{margin:32px;border:1px solid var(--line);}
 .terminal-bar{
-  background:var(--bg3);padding:10px 16px;border-bottom:1px solid var(--line);
+  padding:10px 16px;border-bottom:1px solid var(--line);
   display:flex;justify-content:space-between;align-items:center;
 }
-.terminal-bar .dots{display:flex;gap:6px;}
-.terminal-bar .dot{width:10px;height:10px;border-radius:50%;}
-.dot-r{background:#ff5f57;}.dot-y{background:#ffbd2e;}.dot-g{background:#28c840;}
-.terminal-label{font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:0.1em;}
-.terminal-body{padding:20px;}
+.terminal-label{font-size:9px;color:var(--dim);letter-spacing:0.2em;text-transform:uppercase;}
+.terminal-body{padding:24px;}
 .search-row{display:flex;gap:0;}
 .search-row input{
-  flex:1;font-family:var(--f-mono);font-size:13px;
-  padding:12px 16px;border:1px solid var(--line);background:#0a0a0a;color:var(--text);outline:none;
+  flex:1;font-family:var(--f-mono);font-size:13px;letter-spacing:0.05em;
+  padding:14px 16px;border:1px solid var(--line);background:#000;color:var(--text);outline:none;
+  text-transform:uppercase;
 }
-.search-row input:focus{border-color:var(--accent);}
-.search-row input::placeholder{color:var(--dim);}
+.search-row input:focus{border-color:#666;}
+.search-row input::placeholder{color:var(--dim);text-transform:uppercase;}
 .search-row button{
-  font-family:var(--f-display);font-weight:900;font-size:13px;letter-spacing:0.06em;
-  padding:12px 24px;border:1px solid var(--accent);border-left:none;
-  background:var(--accent);color:#000;cursor:pointer;transition:all 0.15s;
+  font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:0.2em;
+  padding:14px 28px;border:1px solid var(--text);border-left:none;
+  background:var(--text);color:#000;cursor:pointer;transition:all 0.15s;
+  text-transform:uppercase;
 }
-.search-row button:hover{background:#fff;border-color:#fff;}
-.search-row button:disabled{opacity:0.4;cursor:default;}
-.quick-tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+.search-row button:hover{background:#000;color:#fff;border-color:#fff;}
+.search-row button:disabled{opacity:0.3;cursor:default;}
+.quick-tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
 .quick-tags button{
-  font-family:var(--f-mono);font-size:10px;letter-spacing:0.06em;
-  padding:6px 12px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;transition:all 0.15s;
+  font-family:var(--f-mono);font-size:10px;letter-spacing:0.1em;
+  padding:7px 14px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;transition:all 0.15s;
+  text-transform:uppercase;
 }
-.quick-tags button:hover{border-color:var(--accent);color:var(--accent);}
-#searchResults{margin-top:16px;}
-.search-status{font-family:var(--f-mono);font-size:11px;color:var(--dim);padding:12px 0;}
-.search-status.error{color:var(--red);}
-.loading-bar{height:2px;background:var(--line);margin-top:12px;position:relative;overflow:hidden;display:none;}
+.quick-tags button:hover{border-color:#fff;color:#fff;}
+#searchResults{margin-top:18px;}
+.search-status{font-family:var(--f-mono);font-size:11px;color:var(--dim);padding:12px 0;letter-spacing:0.08em;text-transform:uppercase;}
+.search-status.error{color:#999;}
+.loading-bar{height:1px;background:var(--line);margin-top:14px;position:relative;overflow:hidden;display:none;}
 .loading-bar.active{display:block;}
-.loading-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--accent);animation:load 1s ease-in-out infinite;}
+.loading-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:#fff;animation:load 1s ease-in-out infinite;}
 @keyframes load{0%{left:-40%;}100%{left:100%;}}
 
 /* FEED */
-.feed-section{padding:0 32px 60px;position:relative;z-index:1;}
-.section-head{display:flex;justify-content:space-between;align-items:center;padding:20px 0 16px;border-bottom:1px solid var(--line);}
-.section-head h2{font-family:var(--f-display);font-weight:900;font-size:28px;text-transform:uppercase;letter-spacing:0.02em;}
-.section-head .meta{font-family:var(--f-mono);font-size:10px;color:var(--dim);}
+.feed-section{padding:0 32px 60px;}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:24px 0 16px;border-bottom:1px solid var(--line);}
+.section-head h2{font-family:var(--f-mono);font-weight:400;font-size:22px;letter-spacing:0.2em;text-transform:uppercase;}
+.section-head .meta{font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
 article.entry{
-  display:grid;grid-template-columns:56px 1fr;gap:0;
-  border-bottom:1px solid var(--line);transition:background 0.15s;cursor:pointer;position:relative;
+  display:grid;grid-template-columns:60px 1fr;gap:0;
+  border-bottom:1px solid var(--line);transition:background 0.15s;cursor:pointer;
 }
-article.entry:hover{background:rgba(255,255,255,0.02);}
-article.entry::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;transition:background 0.2s;}
-article.entry.verified::after{background:var(--green);}
-article.entry.developing::after{background:var(--accent);}
-article.entry.disputed::after{background:var(--red);}
-.entry-num{padding:26px 0 24px 16px;font-family:var(--f-display);font-weight:900;font-size:12px;color:var(--line);align-self:start;}
-.entry-inner{padding:20px 20px 20px 0;}
-.entry-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px;}
-.entry-title{font-family:var(--f-body);font-weight:700;font-size:16px;line-height:1.35;flex:1;}
-.entry-date{font-family:var(--f-mono);font-size:10px;color:var(--dim);white-space:nowrap;padding-top:2px;}
-.entry-desc{font-size:13px;color:#888;line-height:1.6;margin-bottom:12px;}
-.entry-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.stamp{font-family:var(--f-mono);font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:3px 8px;border:1px solid;}
-.stamp.verified{color:var(--green);border-color:var(--green);}
-.stamp.developing{color:#000;background:var(--accent);border-color:var(--accent);}
-.stamp.disputed{color:var(--red);border-color:var(--red);}
-.src-badge{font-family:var(--f-mono);font-size:9px;color:var(--dim);}
+article.entry:hover{background:#0a0a0a;}
+.entry-num{padding:28px 0 26px 16px;font-size:11px;color:var(--dim);align-self:start;letter-spacing:0.1em;}
+.entry-inner{padding:22px 22px 22px 0;}
+.entry-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.entry-title{font-family:var(--f-body);font-weight:500;font-size:16px;line-height:1.4;flex:1;text-transform:none;}
+.entry-date{font-size:10px;color:var(--dim);white-space:nowrap;padding-top:3px;letter-spacing:0.1em;text-transform:uppercase;}
+.entry-desc{font-family:var(--f-body);font-size:13px;color:#888;line-height:1.65;margin-bottom:14px;}
+.entry-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.stamp{font-size:9px;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--line);color:var(--dim);}
+.src-badge{font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
 
-/* TOUR SECTION — Yeezy.com style */
-.tour-section{
-  background:#fff;color:#000;
-  min-height:100vh;position:relative;z-index:1;
-}
+/* TOUR SECTION */
+.tour-section{background:#000;color:#fff;}
 .tour-hero{
   position:relative;overflow:hidden;
-  min-height:60vh;display:flex;align-items:flex-end;
-  background:#000;
+  min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:#000;text-align:center;
 }
 .tour-hero img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;
 }
-.tour-hero-text{
-  position:relative;z-index:2;padding:40px 48px;
-}
+.tour-hero-text{position:relative;z-index:2;padding:40px;}
 .tour-hero-text .t1{
-  font-family:'Arial Black','Arial Bold',Impact,sans-serif;
-  font-size:clamp(48px,12vw,120px);font-weight:900;line-height:0.9;
-  color:#fff;letter-spacing:-0.02em;text-transform:uppercase;
+  font-family:var(--f-mono);font-size:clamp(36px,8vw,72px);font-weight:400;line-height:1.05;
+  letter-spacing:0.08em;text-transform:uppercase;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,0.6);
 }
 .tour-hero-text .t2{
-  font-family:'Arial Black','Arial Bold',Impact,sans-serif;
-  font-size:clamp(14px,2vw,20px);font-weight:900;
-  color:#fff;letter-spacing:0.35em;text-transform:uppercase;margin-top:16px;
-  opacity:0.7;
+  font-family:var(--f-mono);font-size:clamp(13px,1.6vw,18px);font-weight:400;
+  color:#fff;letter-spacing:0.3em;text-transform:uppercase;margin-top:14px;opacity:0.85;
+  text-shadow:0 2px 20px rgba(0,0,0,0.6);
 }
-.tour-dates{background:#fff;}
+.tour-tabs{display:flex;justify-content:center;gap:48px;border-bottom:1px solid var(--line);}
+.tour-tab{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;
+  padding:18px 0;color:var(--dim);border-bottom:1px solid transparent;
+}
+.tour-tab.active{color:#fff;border-bottom-color:#fff;}
+
+.tour-dates{background:#000;}
 .tour-row{
   display:grid;grid-template-columns:1fr auto;align-items:center;
-  padding:22px 48px;border-bottom:1px solid #e0e0e0;
+  padding:24px 48px;border-bottom:1px solid var(--line);
   transition:background 0.12s;
 }
-.tour-row:hover{background:#f7f7f7;}
+.tour-row:hover{background:#0a0a0a;}
 .tour-row-left .tour-city{
-  font-family:'Arial Black','Arial Bold',Impact,sans-serif;
-  font-weight:900;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#000;
-  line-height:1.1;
+  font-family:var(--f-mono);font-weight:400;font-size:14px;letter-spacing:0.2em;text-transform:uppercase;color:#fff;
+  line-height:1.6;
 }
 .tour-row-left .tour-venue{
-  font-size:12px;color:#666;letter-spacing:0.08em;text-transform:uppercase;
-  margin-top:3px;font-family:var(--f-mono);
+  font-family:var(--f-mono);font-size:14px;color:#fff;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1.6;
 }
 .tour-row-left .tour-datestr{
-  font-family:var(--f-mono);font-size:11px;color:#999;margin-top:2px;
-  letter-spacing:0.06em;text-transform:uppercase;
+  font-family:var(--f-mono);font-size:14px;color:#fff;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1.6;
 }
 .tour-btn{
-  font-family:'Arial Black','Arial Bold',Impact,sans-serif;font-weight:900;
-  font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
-  padding:10px 22px;border:1.5px solid #000;background:#000;color:#fff;
+  font-family:var(--f-mono);font-weight:400;
+  font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
+  padding:12px 26px;border:1px solid #fff;background:transparent;color:#fff;
   cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.15s;
   white-space:nowrap;
 }
 .tour-btn:hover{background:#fff;color:#000;}
-.tour-btn.signup{background:#fff;color:#000;border-color:#000;}
-.tour-btn.signup:hover{background:#000;color:#fff;}
-.tour-btn.none{background:#fff;color:#bbb;border-color:#ddd;cursor:default;}
+.tour-btn.signup{border-color:#fff;}
+.tour-btn.none{background:transparent;color:#444;border-color:#222;cursor:default;}
 .tour-footer-note{
-  padding:24px 48px;font-family:var(--f-mono);font-size:10px;
-  color:#999;letter-spacing:0.08em;border-top:1px solid #e0e0e0;
+  padding:24px 48px;font-size:9px;
+  color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;border-top:1px solid var(--line);
 }
 
 /* POPUP */
 .popup-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;
+  position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;
   display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
 }
 .popup-overlay.open{opacity:1;pointer-events:all;}
 .popup{
-  background:var(--bg2);border:1px solid var(--accent);
+  background:#000;border:1px solid var(--line);
   width:min(520px,90vw);position:relative;
-  transform:translateY(30px);transition:transform 0.3s;max-height:80vh;overflow-y:auto;
+  transform:translateY(20px);transition:transform 0.25s;max-height:80vh;overflow-y:auto;
 }
 .popup-overlay.open .popup{transform:translateY(0);}
-.popup-top{background:var(--accent);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;}
-.popup-top h3{font-family:var(--f-display);font-weight:900;font-size:22px;color:#000;letter-spacing:0.02em;}
-.popup-close{font-family:var(--f-display);font-weight:900;font-size:20px;color:#000;background:none;border:none;cursor:pointer;line-height:1;padding:0 4px;}
+.popup-top{border-bottom:1px solid var(--line);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+.popup-top h3{font-family:var(--f-body);font-weight:500;font-size:18px;color:#fff;letter-spacing:0.01em;line-height:1.4;}
+.popup-close{font-family:var(--f-mono);font-size:14px;color:#fff;background:none;border:1px solid var(--line);cursor:pointer;line-height:1;padding:6px 10px;letter-spacing:0.1em;}
+.popup-close:hover{border-color:#fff;}
 .popup-body{padding:24px 20px;}
-.popup-body .entry-desc{color:#999;margin-bottom:16px;}
+.popup-body .entry-desc{color:#999;margin-bottom:18px;}
 .popup-ext-link{
-  display:inline-block;font-family:var(--f-mono);font-size:11px;
-  color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px;
+  display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  color:#fff;text-decoration:none;border-bottom:1px solid #fff;padding-bottom:2px;
 }
-.popup-ext-link:hover{color:#fff;border-color:#fff;}
+.popup-ext-link:hover{color:#999;border-color:#999;}
 
 /* COUNT STRIP */
-.count-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);font-family:var(--f-mono);}
-.count-cell{padding:20px 32px;border-right:1px solid var(--line);text-align:center;}
+.count-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);}
+.count-cell{padding:24px 32px;border-right:1px solid var(--line);text-align:center;}
 .count-cell:last-child{border-right:none;}
-.count-cell .num{font-family:var(--f-display);font-weight:900;font-size:40px;line-height:1;margin-bottom:4px;}
-.count-cell.v .num{color:var(--green);}
-.count-cell.d .num{color:var(--accent);}
-.count-cell.x .num{color:var(--red);}
-.count-cell .lbl{font-size:9px;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;}
-footer{padding:20px 32px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:10px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;background:var(--bg);}
-#nextUpdate{color:var(--accent);font-weight:700;}
+.count-cell .num{font-family:var(--f-mono);font-weight:400;font-size:32px;line-height:1;margin-bottom:6px;color:#fff;}
+.count-cell .lbl{font-size:9px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;}
+footer{padding:20px 32px;border-top:1px solid var(--line);font-size:9px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:0.1em;text-transform:uppercase;}
+#nextUpdate{color:#fff;}
 
 /* PAGE SECTIONS */
 .page{display:none;}
 .page.active{display:block;}
 
 @media(max-width:600px){
-  .masthead-main{grid-template-columns:1fr;gap:8px;}
-  .masthead-right{text-align:left;}
+  .masthead-main{padding:40px 24px 32px;}
+  .count-row{gap:30px;flex-wrap:wrap;}
   .terminal,.feed-section{padding-left:16px;padding-right:16px;}
   .terminal{margin:16px;}
   .count-strip{grid-template-columns:1fr;}
   .count-cell{border-right:none;border-bottom:1px solid var(--line);}
-  .tour-row{grid-template-columns:1fr;gap:12px;padding:18px 24px;}
+  .tour-row{grid-template-columns:1fr;gap:14px;padding:20px 24px;}
   .tour-hero-text{padding:28px 24px;}
   .tour-footer-note{padding:16px 24px;}
 }
@@ -248,52 +238,54 @@ footer{padding:20px 32px;border-top:1px solid var(--line);font-family:var(--f-mo
   <div class="popup">
     <div class="popup-top">
       <h3 id="popupTitle">—</h3>
-      <button class="popup-close" id="popupClose">✕</button>
+      <button class="popup-close" id="popupClose">CLOSE</button>
     </div>
     <div class="popup-body">
-      <div class="entry-meta" style="margin-bottom:14px;" id="popupMeta"></div>
+      <div class="entry-meta" style="margin-bottom:16px;" id="popupMeta"></div>
       <p class="entry-desc" id="popupDesc"></p>
-      <a class="popup-ext-link" id="popupLink" href="#" target="_blank" rel="noopener">อ่านต้นฉบับ ↗</a>
+      <a class="popup-ext-link" id="popupLink" href="#" target="_blank" rel="noopener">READ SOURCE</a>
     </div>
   </div>
 </div>
 
 <header>
   <div class="masthead-top">
-    <span><span class="live-dot"></span>LIVE FEED · YE WATCH</span>
+    <span><span class="live-dot"></span>LIVE FEED</span>
     <span id="liveClock">—</span>
-    <span>เวอร์ชัน 2.1 · TH</span>
+    <span>V2.1 / EN</span>
   </div>
   <div class="masthead-main">
-    <h1><span class="ye">YE</span><br><span class="watch">WATCH</span></h1>
-    <div class="masthead-right">
-      <div class="count-label">รายการในฐานข้อมูล</div>
-      <div class="big-num" id="totalCount">8</div>
-      <div class="count-label" style="margin-top:4px;">อัปเดต มิ.ย. 2026</div>
+    <h1>YE WATCH</h1>
+    <div class="masthead-sub">Tracking Ye Across The Internet</div>
+    <div class="count-row">
+      <div><b id="totalCount">8</b>ENTRIES</div>
+      <div><b id="cV">0</b>VERIFIED</div>
+      <div><b id="cD">0</b>DEVELOPING</div>
+      <div><b id="cX">0</b>DISPUTED</div>
     </div>
   </div>
 </header>
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-inner" id="tickerInner">
-    <span>GEMINI SEASON MV ใหม่ 8 มิ.ย. 2026</span>
-    <span>Wireless Festival ลอนดอนถูกยกเลิก</span>
-    <span>Ye ลงโฆษณา WSJ ขอโทษ</span>
-    <span>อัลบั้ม BULLY เลื่อนเป็น 30 ม.ค.</span>
-    <span>Grammy 2026 ไม่เชิญ Ye</span>
-    <span>ทัวร์อินเดียครั้งแรก</span>
-    <span>GEMINI SEASON MV ใหม่ 8 มิ.ย. 2026</span>
-    <span>Wireless Festival ลอนดอนถูกยกเลิก</span>
-    <span>Ye ลงโฆษณา WSJ ขอโทษ</span>
-    <span>อัลบั้ม BULLY เลื่อนเป็น 30 ม.ค.</span>
-    <span>Grammy 2026 ไม่เชิญ Ye</span>
-    <span>ทัวร์อินเดียครั้งแรก</span>
+    <span>GEMINI SEASON video released June 8 2026</span>
+    <span>Wireless Festival London cancelled</span>
+    <span>Ye runs apology ad in WSJ</span>
+    <span>BULLY album pushed to Jan 30</span>
+    <span>Grammy 2026 still no invite for Ye</span>
+    <span>First ever India tour announced</span>
+    <span>GEMINI SEASON video released June 8 2026</span>
+    <span>Wireless Festival London cancelled</span>
+    <span>Ye runs apology ad in WSJ</span>
+    <span>BULLY album pushed to Jan 30</span>
+    <span>Grammy 2026 still no invite for Ye</span>
+    <span>First ever India tour announced</span>
   </div>
 </div>
 
 <!-- NAV -->
 <div class="nav-tabs">
-  <button class="nav-tab active" onclick="showPage('news')">ข่าว</button>
+  <button class="nav-tab active" onclick="showPage('news')">NEWS</button>
   <button class="nav-tab" onclick="showPage('tour')">TOUR 2026</button>
 </div>
 
@@ -302,22 +294,21 @@ footer{padding:20px 32px;border-top:1px solid var(--line);font-family:var(--f-mo
   <!-- SEARCH TERMINAL -->
   <div class="terminal">
     <div class="terminal-bar">
-      <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-      <span class="terminal-label" id="termStatus">TERMINAL · READY</span>
-      <span class="terminal-label">local-search-engine · online</span>
+      <span class="terminal-label" id="termStatus">SEARCH / READY</span>
+      <span class="terminal-label">LOCAL INDEX / ONLINE</span>
     </div>
     <div class="terminal-body">
       <div class="search-row">
-        <input type="text" id="searchInput" placeholder="> พิมพ์คำค้นหา เช่น album, concert, controversy" />
+        <input type="text" id="searchInput" placeholder="SEARCH" />
         <button id="searchBtn" onclick="handleSearch()">RUN</button>
       </div>
       <div class="quick-tags">
-        <button onclick="quickSearch('BULLY album')">อัลบั้ม BULLY</button>
-        <button onclick="quickSearch('concert tour')">คอนเสิร์ต</button>
-        <button onclick="quickSearch('Bianca Censori')">Bianca Censori</button>
-        <button onclick="quickSearch('Grammy')">Grammy</button>
-        <button onclick="quickSearch('controversy')">ข่าวฉาว</button>
-        <button onclick="quickSearch('apology')">คำขอโทษ</button>
+        <button onclick="quickSearch('BULLY album')">BULLY ALBUM</button>
+        <button onclick="quickSearch('concert tour')">CONCERTS</button>
+        <button onclick="quickSearch('Bianca Censori')">BIANCA CENSORI</button>
+        <button onclick="quickSearch('Grammy')">GRAMMY</button>
+        <button onclick="quickSearch('controversy')">CONTROVERSY</button>
+        <button onclick="quickSearch('apology')">APOLOGY</button>
       </div>
       <div class="loading-bar" id="loadingBar"></div>
       <div id="searchResults"></div>
@@ -328,15 +319,15 @@ footer{padding:20px 32px;border-top:1px solid var(--line);font-family:var(--f-mo
   <div class="feed-section">
     <div class="section-head">
       <h2>TIMELINE</h2>
-      <span class="meta" id="feedMeta">คลิกที่รายการเพื่อดูรายละเอียด · อัปเดตอัตโนมัติเที่ยงคืน</span>
+      <span class="meta" id="feedMeta">Click an entry for details / auto-updates at midnight</span>
     </div>
     <div id="feed"></div>
   </div>
 
   <div class="count-strip">
-    <div class="count-cell v"><div class="num" id="cV">0</div><div class="lbl">VERIFIED</div></div>
-    <div class="count-cell d"><div class="num" id="cD">0</div><div class="lbl">DEVELOPING</div></div>
-    <div class="count-cell x"><div class="num" id="cX">0</div><div class="lbl">DISPUTED</div></div>
+    <div class="count-cell"><div class="num" id="cV2">0</div><div class="lbl">VERIFIED</div></div>
+    <div class="count-cell"><div class="num" id="cD2">0</div><div class="lbl">DEVELOPING</div></div>
+    <div class="count-cell"><div class="num" id="cX2">0</div><div class="lbl">DISPUTED</div></div>
   </div>
 </div>
 
@@ -346,83 +337,103 @@ footer{padding:20px 32px;border-top:1px solid var(--line);font-family:var(--f-mo
     <div class="tour-hero">
       <img src="https://tour.yeezy.com/yeezy/tampa-hero.png" alt="Ye Live Concert" onerror="this.style.display='none'">
       <div class="tour-hero-text">
-        <div class="t1">YE<br>LIVE</div>
-        <div class="t2">TOUR 2O26</div>
+        <div class="t1">YE LIVE CONCERT</div>
+        <div class="t2">TOUR 2026</div>
       </div>
     </div>
+    <div class="tour-tabs">
+      <div class="tour-tab active">TOUR</div>
+      <div class="tour-tab">STORE</div>
+    </div>
     <div class="tour-dates" id="tourDates"></div>
-    <div class="tour-footer-note">ข้อมูลจาก tour.yeezy.com · อัปเดต มิ.ย. 2026 · ราคาและกำหนดการอาจเปลี่ยนแปลง</div>
+    <div class="tour-footer-note">Source: tour.yeezy.com / Updated June 2026 / Dates and prices subject to change</div>
   </div>
 </div>
 
 <footer>
-  <span>ข้อมูลอ้างอิง: Rolling Stone · Billboard · Time Out · AOL · tour.yeezy.com</span>
-  <span>อัปเดตครั้งถัดไป: <span id="nextUpdate">—</span></span>
+  <span>Sources: Rolling Stone / Billboard / Time Out / AOL / tour.yeezy.com</span>
+  <span>Next update in: <span id="nextUpdate">—</span></span>
 </footer>
 
 <script>
 /* ─── STATIC DATA ─── */
 const STATIC = [
   {
-    date:"10 มิ.ย. 2026",
-    title:"Taylor Swift กอด Kylie Jenner ที่เกมส์ Knicks",
-    desc:"ผ่านสิบปีจากความขัดแย้งกับ Kim/Kanye มีภาพ Taylor กอด Kylie ในเกมบาส Knicks vs Spurs",
+    date:"Jul 27, 2025",
+    title:"Entire 'BULLY' tracklist leaks on X via @yeunrlsd",
+    desc:"X account @yeunrlsd posted a screenshot showing the full BULLY tracklist, claiming the entire album had leaked. Three tracks (Damn, Beauty and the Best, Preacher Man) had already been officially released",
+    status:"verified",sources:2,
+    url:"https://www.sportskeeda.com/us/music/kanye-west-s-unreleased-album-bully-allegedly-leaks-online-screenshot-goes-viral-reddit-x",
+    tags:["leak","bully","tracklist","x","twitter","reddit","yeunrlsd"]
+  },
+  {
+    date:"May 18, 2025",
+    title:"Full 'WW3' album leaks across Discord and X",
+    desc:"The complete WW3 project spread rapidly via Discord before hitting X, with tracks including Diddy Free, Dirty Magazines, and Free My Kids confirmed circulating",
+    status:"verified",sources:2,
+    url:"https://www.hotnewhiphop.com/912474-entire-kanye-west-album-leaked-hip-hop-news",
+    tags:["leak","ww3","album","discord","x","twitter"]
+  },
+  {
+    date:"Jun 10, 2026",
+    title:"Taylor Swift hugs Kylie Jenner at Knicks game",
+    desc:"A decade after the Taylor/Kim/Kanye feud, photos show Taylor hugging Kylie at a Knicks vs Spurs game",
     status:"verified",sources:2,
     url:"https://www.eonline.com/news/kanye_west",
     tags:["taylor swift","kylie","knicks","basketball"]
   },
   {
-    date:"8 มิ.ย. 2026",
-    title:"Ye ปล่อย MV 'GEMINI SEASON' กำกับโดย Bianca Censori",
-    desc:"ฉลองวันเกิดครบ 49 ที่อัมสเตอร์ดัม พร้อมประกาศ BULLY deluxe edition",
+    date:"Jun 8, 2026",
+    title:"Ye releases 'GEMINI SEASON' video directed by Bianca Censori",
+    desc:"Released to mark his 49th birthday in Amsterdam, alongside an announcement of a BULLY deluxe edition",
     status:"verified",sources:3,
     url:"https://www.billboard.com/music/rb-hip-hop/ye-bianca-censori-gemini-season-bully-deluxe-1236267702/",
     tags:["gemini season","mv","bianca censori","bully","deluxe","birthday","amsterdam"]
   },
   {
-    date:"9 มิ.ย. 2026",
-    title:"เอกสารธุรกิจระบุ 'Ye Ye' — แฟนๆ สงสัยเปลี่ยนชื่ออีก",
-    desc:"เอกสาร Yeezy อาจเปลี่ยนชื่อจาก 'Ye West' เป็น 'Ye Ye' แต่ยังไม่มีการประกาศทางกฎหมาย",
+    date:"Jun 9, 2026",
+    title:"Business filing lists 'Ye Ye' — fans speculate another name change",
+    desc:"A Yeezy filing may signal a switch from 'Ye West' to 'Ye Ye', though no legal announcement has been made",
     status:"developing",sources:1,
     url:"https://www.aol.com/kanye-west-changes-name-again-152031493.html",
     tags:["name change","ye ye","yeezy","legal"]
   },
   {
-    date:"เม.ย. 2026",
-    title:"Wireless Festival ลอนดอนถูกยกเลิกหลังวีซ่าเพิกถอน",
-    desc:"Home Office เพิกถอนสิทธิ์เข้าอังกฤษของ Ye ผู้ถือตั๋วคืนเงินเต็มจำนวน",
+    date:"Apr 2026",
+    title:"Wireless Festival London cancelled after visa revoked",
+    desc:"The Home Office revoked Ye's UK entry clearance, and ticket holders are receiving full refunds",
     status:"verified",sources:2,
     url:"https://www.timeout.com/london/news/kanye-west-is-wireless-festival-2026-cancelled-040726",
     tags:["wireless festival","london","uk","visa","cancelled","concert","tour"]
   },
   {
-    date:"เม.ย. 2026",
-    title:"Grammy 2026 ไม่เชิญ Ye แม้ลงโฆษณาขอโทษ WSJ",
-    desc:"Recording Academy ยังคงไม่เชิญ Ye หลังโฆษณาขอโทษชุมชนยิวและคนผิวดำ",
+    date:"Apr 2026",
+    title:"Grammy 2026 still won't invite Ye despite WSJ apology ad",
+    desc:"The Recording Academy continues to exclude Ye after he ran an apology ad addressed to the Jewish and Black communities",
     status:"developing",sources:1,
     url:"https://www.aol.com/entertainment/kanye-west-not-welcome-grammys-121950345.html",
     tags:["grammy","awards","recording academy","invite","ban"]
   },
   {
-    date:"เม.ย. 2026",
-    title:"Ye ลงโฆษณาเต็มหน้า WSJ ขอโทษพฤติกรรมในอดีต",
-    desc:"จดหมายเปิดผนึกใน Wall Street Journal กล่าวถึงโรคไบโพลาร์และขอโทษชุมชนยิวและคนผิวดำ",
+    date:"Apr 2026",
+    title:"Ye takes out full-page WSJ ad apologizing for past behavior",
+    desc:"An open letter in the Wall Street Journal references bipolar disorder and apologizes to the Jewish and Black communities",
     status:"verified",sources:2,
     url:"https://ca.billboard.com/tag/ye",
     tags:["apology","wsj","wall street journal","bipolar","jewish","black","sorry","controversy"]
   },
   {
-    date:"ม.ค. 2026",
-    title:"ประกาศแผนทัวร์อินเดียครั้งแรก อัลบั้ม BULLY เลื่อนเป็น 30 ม.ค.",
-    desc:"Ye วางแผนไปแสดงที่อินเดียเป็นครั้งแรก อัลบั้ม BULLY ถูกเลื่อนจาก มิ.ย. 2025",
+    date:"Jan 2026",
+    title:"First ever India tour plans announced, BULLY album pushed to Jan 30",
+    desc:"Ye is planning his first ever performance in India, while the BULLY album has been delayed from its original Jun 2025 date",
     status:"developing",sources:1,
     url:"https://au.rollingstone.com/?p=89958",
     tags:["india","tour","concert","bully","album","delayed","postponed"]
   },
   {
-    date:"พ.ค. 2025",
-    title:"เพลง 'Heil Hitler' ทำให้คอนเสิร์ตเกาหลีถูกยกเลิก",
-    desc:"เพลงที่มีเนื้อหาขัดแย้งถูกแบนทุกแพลตฟอร์ม คอนเสิร์ตเกาหลีใต้ยกเลิกแล้วได้วันใหม่ที่อินชอน",
+    date:"May 2025",
+    title:"'Heil Hitler' track leads to South Korea show cancellation",
+    desc:"The track was banned across platforms and the South Korea show was cancelled before being rescheduled in Incheon",
     status:"disputed",sources:2,
     url:"https://www.sportskeeda.com/us/music/kanye-west-s-south-korea-concert-gets-new-date-following-previous-cancellation-controversy",
     tags:["heil hitler","korea","south korea","incheon","concert","banned","controversy","cancelled"]
@@ -431,14 +442,14 @@ const STATIC = [
 
 /* ─── TOUR DATA (from tour.yeezy.com) ─── */
 const TOUR = [
-  {city:"TAMPA",venue:"RAYMOND JAMES STADIUM",date:"26 JUNE 2O26",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"TAMPA",venue:"RAYMOND JAMES STADIUM",date:"28 JUNE 2O26",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"SAN ANTONIO",venue:"",date:"4 JULY 2O26",status:"signup",url:"https://tour.yeezy.com/"},
-  {city:"TIRANA",venue:"EAGLE STADIUM",date:"11 JULY 2O26",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"MADRID",venue:"RIYADH AIR METROPOLITANO",date:"3O JULY 2O26",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"ALGARVE",venue:"ESTÁDIO ALGARVE",date:"7 AUGUST 2O26",status:"buy",url:"https://tour.yeezy.com/"},
-  {city:"CHICAGO",venue:"SOLDIER FIELD",date:"3 SEPTEMBER 2O26",status:"signup",url:"https://tour.yeezy.com/"},
-  {city:"CHICAGO",venue:"SOLDIER FIELD",date:"4 SEPTEMBER 2O26",status:"signup",url:"https://tour.yeezy.com/"},
+  {city:"TAMPA",venue:"RAYMOND JAMES STADIUM",date:"26 JUNE 2026",status:"buy",url:"https://tour.yeezy.com/"},
+  {city:"TAMPA",venue:"RAYMOND JAMES STADIUM",date:"28 JUNE 2026",status:"buy",url:"https://tour.yeezy.com/"},
+  {city:"SAN ANTONIO",venue:"",date:"4 JULY 2026",status:"signup",url:"https://tour.yeezy.com/"},
+  {city:"TIRANA",venue:"EAGLE STADIUM",date:"11 JULY 2026",status:"buy",url:"https://tour.yeezy.com/"},
+  {city:"MADRID",venue:"RIYADH AIR METROPOLITANO",date:"30 JULY 2026",status:"buy",url:"https://tour.yeezy.com/"},
+  {city:"ALGARVE",venue:"ESTÁDIO ALGARVE",date:"7 AUGUST 2026",status:"buy",url:"https://tour.yeezy.com/"},
+  {city:"CHICAGO",venue:"SOLDIER FIELD",date:"3 SEPTEMBER 2026",status:"signup",url:"https://tour.yeezy.com/"},
+  {city:"CHICAGO",venue:"SOLDIER FIELD",date:"4 SEPTEMBER 2026",status:"signup",url:"https://tour.yeezy.com/"},
 ];
 
 const STATUS_LBL = {verified:"VERIFIED",developing:"DEVELOPING",disputed:"DISPUTED"};
@@ -446,7 +457,7 @@ const STATUS_LBL = {verified:"VERIFIED",developing:"DEVELOPING",disputed:"DISPUT
 /* ─── CLOCK ─── */
 function updateClock(){
   document.getElementById('liveClock').textContent =
-    new Date().toLocaleString('th-TH',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    new Date().toLocaleString('en-US',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 updateClock(); setInterval(updateClock, 1000);
 
@@ -487,7 +498,7 @@ function renderTour(){
     } else if(t.status==='signup'){
       btnHtml = `<a class="tour-btn signup" href="${t.url}" target="_blank" rel="noopener">SIGN UP</a>`;
     } else {
-      btnHtml = `<span class="tour-btn none">ยังไม่มีกำหนด</span>`;
+      btnHtml = `<span class="tour-btn none">TBA</span>`;
     }
     row.innerHTML = `
       <div class="tour-row-left">
@@ -515,6 +526,9 @@ function renderFeed(){
   document.getElementById('cV').textContent = v;
   document.getElementById('cD').textContent = d;
   document.getElementById('cX').textContent = x;
+  document.getElementById('cV2').textContent = v;
+  document.getElementById('cD2').textContent = d;
+  document.getElementById('cX2').textContent = x;
   document.getElementById('totalCount').textContent = STATIC.length;
 }
 renderFeed();
@@ -522,7 +536,7 @@ renderFeed();
 function makeEntryEl(e, num){
   const st = validStatus(e.status);
   const art = document.createElement('article');
-  art.className = `entry ${st}`;
+  art.className = `entry`;
   art.innerHTML = `
     <div class="entry-num">${String(num).padStart(2,'0')}</div>
     <div class="entry-inner">
@@ -532,8 +546,8 @@ function makeEntryEl(e, num){
       </div>
       <p class="entry-desc">${esc(e.desc||e.summary||'')}</p>
       <div class="entry-meta">
-        <span class="stamp ${st}">${STATUS_LBL[st]}</span>
-        <span class="src-badge">${e.sources||'?'} แหล่งข่าว</span>
+        <span class="stamp">${STATUS_LBL[st]}</span>
+        <span class="src-badge">${e.sources||'?'} SOURCES</span>
       </div>
     </div>`;
   art.addEventListener('click', () => openPopup(e));
@@ -546,8 +560,8 @@ function openPopup(e){
   document.getElementById('popupTitle').textContent = e.title||'';
   document.getElementById('popupDesc').textContent = e.desc||e.summary||'';
   document.getElementById('popupMeta').innerHTML = `
-    <span class="stamp ${st}">${STATUS_LBL[st]}</span>
-    <span class="src-badge">${e.sources||'?'} แหล่งข่าว · ${esc(e.date||'')}</span>`;
+    <span class="stamp">${STATUS_LBL[st]}</span>
+    <span class="src-badge">${e.sources||'?'} SOURCES / ${esc(e.date||'')}</span>`;
   const lnk = document.getElementById('popupLink');
   lnk.href = e.url||'#';
   lnk.style.display = e.url ? 'inline-block' : 'none';
@@ -586,12 +600,11 @@ function runSearch(query){
 
   btn.disabled = true;
   bar.classList.add('active');
-  status.textContent = 'SEARCHING...';
-  results.innerHTML = '<div class="search-status">กำลังค้นหา...</div>';
+  status.textContent = 'SEARCHING';
+  results.innerHTML = '<div class="search-status">Searching...</div>';
 
   setTimeout(() => {
     const q = query.toLowerCase();
-    // แบ่งคำค้น เอาแต่คำที่ยาวพอ
     const words = q.split(/\s+/).filter(w => w.length >= 2);
 
     const scored = STATIC.map(item => {
@@ -601,7 +614,6 @@ function runSearch(query){
         ...(item.tags||[])
       ].join(' ').toLowerCase();
 
-      // ทดสอบทั้ง query เต็ม และแต่ละคำ
       let score = 0;
       if(searchable.includes(q)) score += 10;
       words.forEach(w => { if(searchable.includes(w)) score += 2; });
@@ -612,14 +624,14 @@ function runSearch(query){
     btn.disabled = false;
 
     if(scored.length === 0){
-      results.innerHTML = `<div class="search-status error">⚠ ไม่พบผลลัพธ์สำหรับ "${esc(query)}"</div>`;
-      status.textContent = 'DONE · 0 RESULTS';
+      results.innerHTML = `<div class="search-status error">NO RESULTS FOR "${esc(query)}"</div>`;
+      status.textContent = 'DONE / 0 RESULTS';
     } else {
-      results.innerHTML = `<div class="search-status" style="color:var(--accent);margin-bottom:8px;">▶ พบ ${scored.length} รายการ สำหรับ "${esc(query)}"</div>`;
+      results.innerHTML = `<div class="search-status" style="color:#fff;margin-bottom:8px;">${scored.length} RESULT${scored.length>1?'S':''} FOR "${esc(query)}"</div>`;
       scored.forEach(({item}, i) => {
         results.appendChild(makeEntryEl(item, i+1));
       });
-      status.textContent = `DONE · ${scored.length} ITEMS`;
+      status.textContent = `DONE / ${scored.length} ITEMS`;
     }
   }, 600);
 }
