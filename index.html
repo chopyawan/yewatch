@@ -3,17 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YE WATCH</title>
+<title>YE WATCH // ARCHIVE INDEX</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;border-radius:0 !important;}
 
-/* ─── THEME CONFIGURATION (DEFAULT STARK WHITE) ─── */
+/* ─── THEME CONFIGURATION (MINIMAL LIGHT EDITORIAL) ─── */
 :root{
-  --bg:#ffffff;--bg2:#f9f9f9;--bg3:#f0f0f0;--line:#111111;
+  --bg:#ffffff;--bg2:#f9f9f9;--bg3:#e5e5e5;--line:#111111;
   --text:#111111;--dim:#666666;--accent:#0052ff;
   --green:#00aa45;--red:#ff3b30;
   --f-mono:'Courier New',Courier,'Lucida Console',monospace;
   --f-body:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+body.dark-theme {
+  --bg:#000000;--bg2:#0d0d0d;--bg3:#1a1a1a;--line:#ffffff;
+  --text:#ffffff;--dim:#888888;
 }
 
 html{scroll-behavior:smooth;}
@@ -32,44 +37,41 @@ header{border-bottom:1px solid var(--line); position:relative; z-index:100; tran
   transition: all 0.4s; position: relative;
 }
 .live-dot{
-  display:inline-block;width:9px;height:8px;border-radius:50% !important;
+  display:inline-block;width:9px;height:9px;border-radius:50% !important;
   background:var(--red);margin-right:6px;
   animation:blink 1.2s infinite;vertical-align:middle;
 }
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* NOTIFICATION BELL SYSTEM */
+/* ─── LIVE SCRAPER LOG BELL CONSOLE ─── */
 .notif-wrapper { position: relative; display: inline-block; }
 .bell-btn {
   background: transparent; border: 1px solid var(--line); color: var(--text);
-  padding: 6px 14px; font-family: var(--f-mono); font-size: 11px; cursor: pointer;
-  letter-spacing: 0.1em; font-weight: bold; transition: all 0.2s; display: flex; align-items: center; gap: 4px;
+  padding: 8px 16px; font-family: var(--f-mono); font-size: 12px; cursor: pointer;
+  letter-spacing: 0.1em; font-weight: bold; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
 }
 .bell-btn:hover { background: var(--text); color: var(--bg); }
 .bell-badge {
-  background: var(--red); color: #fff; padding: 1px 6px; font-size: 9px; 
-  font-weight: bold; display: none; animation: pulse 0.5s infinite alternate;
+  background: var(--red); color: #fff; padding: 1px 6px; font-size: 10px; 
+  font-weight: bold; display: none;
 }
-@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
 
 .notif-dropdown {
-  position: absolute; right: 0; top: calc(100% + 1px); width: 360px; 
+  position: absolute; right: 0; top: calc(100% + 1px); width: 380px; 
   background: var(--bg); border: 1px solid var(--line); z-index: 1000;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15); display: none; max-height: 400px; overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15); display: none; max-height: 450px; overflow-y: auto;
 }
 .notif-dropdown.show { display: block; }
 .notif-header {
   padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--bg2);
-  font-size: 11px; font-weight: bold; letter-spacing: 0.1em; color: var(--dim); display: flex; justify-content: space-between;
+  font-size: 11px; font-weight: bold; letter-spacing: 0.1em; color: var(--dim); display: flex; justify-content: space-between; align-items: center;
 }
-.notif-clear-btn { cursor: pointer; text-decoration: underline; background: none; border: none; color: var(--dim); font-family: var(--f-mono); font-size: 11px; }
-.notif-clear-btn:hover { color: var(--text); }
+.notif-status-bar { font-size: 10px; color: var(--green); font-weight: bold; letter-spacing: 0.05em; }
 .notif-item { padding: 14px 16px; border-bottom: 1px solid var(--bg3); font-size: 13px; line-height: 1.5; color: var(--text); }
-.notif-item .platform-tag { font-weight: bold; display: inline-block; margin-bottom: 4px; }
+.notif-item .log-tag { font-weight: bold; display: block; margin-bottom: 2px; font-size: 11px; }
 .notif-item .time { font-size: 10px; color: var(--dim); display: block; margin-top: 6px; }
-.notif-empty { padding: 32px 16px; text-align: center; color: var(--dim); font-size: 13px; }
 
-/* MAIN BRAND HEADER */
+/* BRANDING HEADER */
 .masthead-main{ padding:80px 32px 60px; text-align:center; background:var(--bg); transition: background 0.4s; }
 h1 { font-family:var(--f-mono); font-weight:700; font-size:clamp(50px,11vw,110px); line-height:0.95; letter-spacing:0.02em; text-transform:uppercase; color:var(--text); }
 .masthead-sub { font-size:15px; letter-spacing:0.4em; text-transform:uppercase; color:var(--dim); margin-top:24px; font-weight:bold; }
@@ -93,7 +95,7 @@ h1 { font-family:var(--f-mono); font-weight:700; font-size:clamp(50px,11vw,110px
 .nav-tab:hover{color:var(--text);}
 .nav-tab.active{color:var(--text);border-bottom-color:var(--text);}
 
-/* ─── ALBUM GRID SELECTOR PANEL ─── */
+/* ALBUM GRID SELECTOR PANEL */
 .era-selector-container { margin: 32px; border: 1px solid var(--line); background: var(--bg2); padding: 24px; transition: all 0.4s; }
 .era-grid-title { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 16px; text-align: center; }
 .era-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
@@ -120,9 +122,8 @@ h1 { font-family:var(--f-mono); font-weight:700; font-size:clamp(50px,11vw,110px
 .loading-bar{height:2px;background:var(--line);margin-top:14px;position:relative;overflow:hidden;display:none;}
 .loading-bar.active{display:block;}
 .loading-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--text);animation:load 1s ease-in-out infinite;}
-@keyframes load{0%{left:-40%;}100%{left:100%;}}
 
-/* FEED LIST (ขยายฟอนต์ให้อ่านง่ายคมชัดสูงสุด) */
+/* TIMELINE FEED (ENLARGED HIGHLY VISIBLE TYPOGRAPHY) */
 .feed-section{padding:0 32px 60px;position:relative;z-index:1;}
 .section-head{display:flex;justify-content:space-between;align-items:center;padding:24px 0 16px;border-bottom:1px solid var(--line);transition: border 0.4s;}
 .section-head h2{font-family:var(--f-mono);font-weight:700;font-size:26px;letter-spacing:0.15em;text-transform:uppercase;}
@@ -138,13 +139,13 @@ article.entry:hover{background:var(--bg2); transform:translateX(4px);}
 .entry-inner{padding:24px 0;}
 .entry-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
 
-/* Accessible Enlarged Sizes */
+/* Enlarged Font Core */
 .entry-title{font-family:var(--f-body);font-weight:700;font-size:21px;line-height:1.45;flex:1;color:var(--text);}
 .entry-date{font-size:12px;color:var(--dim);white-space:nowrap;padding-top:4px;letter-spacing:0.1em;text-transform:uppercase;}
 .entry-desc{font-family:var(--f-body);font-size:16px;color:var(--text);opacity:0.9;line-height:1.7;margin-bottom:16px;}
 .entry-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 
-/* FIXED SIZE FOR GENUINE COVER ASPECT RATIOS */
+/* 1:1 PERFECT BOX FOR COVERS */
 .entry-img-thumb { width: 150px; height: 150px; object-fit: cover; border: 1px solid var(--line); margin-right: 16px; background: var(--bg3); transition: border 0.4s; }
 
 .stamp{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--line);}
@@ -152,7 +153,7 @@ article.entry:hover{background:var(--bg2); transform:translateX(4px);}
 .stamp.unverified-badge { border-color: var(--dim); color: var(--dim); background: var(--bg3); }
 .src-badge{font-size:11px;color:var(--dim);letter-spacing:0.05em;text-transform:uppercase;}
 
-/* ─── YEEZY TOUR (STANDALONE STYLE BRUTALIST) ─── */
+/* ─── YEEZY TOUR TAB (tour.yeezy.com STYLE) ─── */
 .tour-section{background:var(--bg); color:var(--text); position:relative; z-index:1; transition: all 0.4s;}
 .tour-brutalist-header { padding: 80px 32px 40px; border-bottom: 1px solid var(--line); text-align: left; transition: border 0.4s; }
 .tour-brutalist-header h2 { font-family: var(--f-mono); font-size: clamp(38px, 8vw, 76px); font-weight: 700; letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.9; }
@@ -171,23 +172,24 @@ article.entry:hover{background:var(--bg2); transform:translateX(4px);}
 .tour-btn-yzy:hover { color: var(--dim); text-decoration: none; }
 .tour-footer-note{ padding:40px 32px; font-size:13px; color:var(--dim); letter-spacing:0.05em; text-transform:uppercase; background:var(--bg); line-height: 1.7; transition: all 0.4s; }
 
-/* POPUP PREVIEW LOG */
+/* POPUP MODULE */
 .popup-overlay{
   position:fixed;inset:0;background:rgba(255,255,255,0.94);z-index:1000;
   display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease;backdrop-filter:blur(10px);
 }
+body.dark-theme .popup-overlay { background:rgba(0,0,0,0.94); }
 .popup-overlay.open{opacity:1;pointer-events:all;}
 .popup{ background:var(--bg);border:1px solid var(--line);width:min(620px,93vw);position:relative;max-height:85vh;overflow-y:auto; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
 .popup-img-full { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid var(--line); background: var(--bg3); }
 .popup-top{border-bottom:1px solid var(--line);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;background:var(--bg2);}
-.popup-top h3{font-family:var(--f-body);font-weight:700;font-size:22px;color:var(--text);line-height:1.4;}
+.popup-top h3{font-family:var(--f-body);font-weight:700;font-size:20px;color:var(--text);line-height:1.4;}
 .popup-close{font-family:var(--f-mono);font-size:13px;font-weight:bold;color:var(--text);background:none;border:1px solid var(--line);cursor:pointer;padding:8px 16px;}
 .popup-close:hover{background:var(--text);color:var(--bg);}
 .popup-body{padding:28px 24px;}
 .popup-body .entry-desc{color:var(--text);margin-bottom:24px;font-size:17px;line-height:1.75;}
 .popup-ext-link{ display:inline-block;font-family:var(--f-mono);font-size:13px;letter-spacing:0.1em;text-transform:uppercase; color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px;font-weight:bold; }
 
-/* ANALYSIS STRIP */
+/* STRIP & FOOTER */
 .count-strip{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);background:var(--bg);position:relative;z-index:1;transition: border 0.4s;}
 .count-cell{padding:26px 32px;border-right:1px solid var(--line);text-align:center;transition: border 0.4s;}
 .count-cell:last-child{border-right:none;}
@@ -195,6 +197,7 @@ article.entry:hover{background:var(--bg2); transform:translateX(4px);}
 .count-cell .lbl{font-size:11px;letter-spacing:0.15em;color:var(--dim);text-transform:uppercase;font-weight:600;}
 
 footer{position:relative;z-index:1;padding:24px 32px;border-top:1px solid var(--line);font-size:12px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:0.05em;text-transform:uppercase;background:var(--bg);transition: border 0.4s;}
+#nextUpdate { color: var(--text); font-weight: bold; }
 
 .page{display:none;}
 .page.active{display:block;}
@@ -211,7 +214,7 @@ footer{position:relative;z-index:1;padding:24px 32px;border-top:1px solid var(--
     </div>
     <div class="popup-body">
       <div class="entry-meta" style="margin-bottom:16px;" id="popupMeta"></div>
-      <p class="entry-desc" id="popupDesc"></p>
+      <p class="popup-desc" id="popupDesc"></p>
       <a class="popup-ext-link" id="popupLink" href="#" target="_blank" rel="noopener">READ SOURCE</a>
     </div>
   </div>
@@ -219,21 +222,19 @@ footer{position:relative;z-index:1;padding:24px 32px;border-top:1px solid var(--
 
 <header>
   <div class="masthead-top">
-    <span><span class="live-dot"></span>LIVE RECORDS PREVIEW</span>
+    <span><span class="live-dot"></span>LIVE MONITOR</span>
     <span id="liveClock">—</span>
     
     <div class="notif-wrapper">
       <button class="bell-btn" onclick="toggleNotifDropdown()">
-        🔔 LIVE MOVEMENT <span class="bell-badge" id="bellBadge">0</span>
+        📡 API MONITOR LOGS <span class="bell-badge" id="bellBadge">0</span>
       </button>
       <div class="notif-dropdown" id="notifDropdown">
         <div class="notif-header">
-          <span>STREAM INTEL CHANNELS</span>
-          <button class="notif-clear-btn" onclick="clearNotifications()">CLEAR ALL</button>
+          <span class="notif-status-bar">● LIVE DATA INGESTION READY</span>
         </div>
         <div id="notifItemsContainer">
-          <div class="notif-empty">NO NEW SOCIAL MOVEMENTS DETECTED</div>
-        </div>
+          </div>
       </div>
     </div>
     
@@ -273,7 +274,7 @@ footer{position:relative;z-index:1;padding:24px 32px;border-top:1px solid var(--
       <button class="era-btn" id="era-vultures" onclick="selectEra('vultures')">🦅 VULTURES</button>
       <button class="era-btn" id="era-donda" onclick="selectEra('donda')">🖤 DONDA</button>
       <button class="era-btn" id="era-jik" onclick="selectEra('jik')">💙 JESUS IS KING</button>
-      <button class="era-btn" id="era-ye" onclick="selectEra('ye')">⛰️ YE (2018)</button>
+      <button class="era-btn" id="era-ye" onclick="selectEra('ye')">⛰️ YE & KSG</button>
       <button class="era-btn" id="era-yandhi" onclick="selectEra('yandhi')">🛸 YANDHI (UNRELEASED)</button>
       <button class="era-btn" id="era-tlop" onclick="selectEra('tlop')">🧡 LIFE OF PABLO</button>
       <button class="era-btn" id="era-yeezus" onclick="selectEra('yeezus')">💿 YEEZUS</button>
@@ -336,14 +337,14 @@ footer{position:relative;z-index:1;padding:24px 32px;border-top:1px solid var(--
 </footer>
 
 <script>
-/* ─── GENUINE COLOR PALETTES MATCHING EACH COVER ACCURATELY ─── */
+/* ─── GENUINE ALBUM COLOR PALETTES ─── */
 const ALBUM_THEMES = {
   all: { bg: '#ffffff', bg2: '#f9f9f9', bg3: '#f0f0f0', line: '#111111', text: '#111111', dim: '#666666', accent: '#0052ff', label: 'ALL RECORDINGS' },
   bully: { bg: '#fcfaf2', bg2: '#f4f0e6', bg3: '#eadecc', line: '#4a4540', text: '#2c2a29', dim: '#7a736d', accent: '#b89047', label: 'BULLY DESIGN TIMELINE' },
   vultures: { bg: '#0d0d0d', bg2: '#161616', bg3: '#222222', line: '#ffffff', text: '#ffffff', dim: '#888888', accent: '#ffffff', label: 'VULTURES 1 & 2 DUAL ERA' },
   donda: { bg: '#000000', bg2: '#080808', bg3: '#111111', line: '#333332', text: '#888888', dim: '#555555', accent: '#ffffff', label: 'DONDA MONOLITH ABSOLUTE BLACK' },
   jik: { bg: '#0d2c73', bg2: '#143c8f', bg3: '#1c4faa', line: '#ffffff', text: '#ffffff', dim: '#fcd116', accent: '#fcd116', label: 'JESUS IS KING BLUE VINYL ERA' },
-  ye: { bg: '#1c2d30', bg2: '#243b3e', bg3: '#2d494d', line: '#00ff66', text: '#ffffff', dim: '#a2b5b8', accent: '#00ff66', label: 'YE MOUNTAIN INTROSPECTION' },
+  ye: { bg: '#1c2d30', bg2: '#243b3e', bg3: '#2d494d', line: '#00ff66', text: '#ffffff', dim: '#a2b5b8', accent: '#00ff66', label: 'YE & KSG PRODUCTION ERAS' },
   yandhi: { bg: '#f2f5fe', bg2: '#e6eeff', bg3: '#d9e6ff', line: '#202f54', text: '#111c24', dim: '#627293', accent: '#8a2be2', label: 'YANDHI LOST MINI-DISC SESSIONS' },
   tlop: { bg: '#f57c51', bg2: '#fa9673', bg3: '#fcb095', line: '#ffffff', text: '#ffffff', dim: '#111111', accent: '#111111', label: 'THE LIFE OF PABLO ORANGE GRID' },
   yeezus: { bg: '#e8eaec', bg2: '#dadcd0', bg3: '#ccd0d2', line: '#111111', text: '#111111', dim: '#555555', accent: '#ff2b2b', label: 'YEEZUS INDUSTRIAL RAW SESSIONS' },
@@ -353,12 +354,12 @@ const ALBUM_THEMES = {
   classic: { bg: '#423125', bg2: '#574337', bg3: '#6b5145', line: '#f7ebdf', text: '#f7ebdf', dim: '#dfb15b', accent: '#dfb15b', label: 'THE ACADEMIC BEAR TRILOGY' }
 };
 
-/* ─── COMPREHENSIVE DATASET LINKED 100% TO UPLOADED COVER GRAPHICS ─── */
+/* ─── DYNAMIC DIRECT HIGH-QUALITY ALBUM COVERS FROM OPEN ARCHIVES ─── */
 const STATIC = [
   {
     date:"Jun 8, 2026",
     title:"[BULLY ERA] Ye releases 'GEMINI SEASON' visual treatment on 49th Birthday",
-    desc:"OFFICIAL: Directed by Bianca Censori in Amsterdam, the drop activates the acoustic minimalist 'BULLY' deluxe extensions tracking models.",
+    desc:"OFFICIAL: Directed by Bianca Censori in Amsterdam, the drop activates the acoustic minimalist 'BULLY' deluxe expansions tracking models.",
     status:"verified",sources:3,
     url:"https://www.billboard.com",
     image:"https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80",
@@ -403,34 +404,34 @@ const STATIC = [
   {
     date:"Oct 25, 2019",
     title:"[JESUS IS KING] Royal blue vinyl 'Jesus Is King' converts sonic palettes",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ea45.jpg] Moving permanently into clean gospel and Sunday Service choir orchestrations, Ye releases his bright blue custom wax vinyl track log.",
+    desc:"OFFICIAL ALBUM RELEASE: Moving permanently into clean gospel and Sunday Service choir orchestrations, Ye releases his bright blue custom wax vinyl track log.",
     status:"verified",sources:4,
     url:"https://www.billboard.com",
-    image:"https://chopyawan.github.io/yewatch/image_91ea45.jpg", /* ยึดไฟล์จริงใน Repo */
+    image:"image_91ea45.jpg", 
     tags:["album", "jik", "verified"]
   },
   {
     date:"Jun 8, 2018",
-    title:"[KIDS SEE GHOSTS] Collaborative psych-gospel 'KSG' with Kid Cudi debuts",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ea85.jpg] Handcrafted with watercolor canvas treatments by Takashi Murakami, the 7-track therapeutic project hits records.",
+    title:"[YE / KSG] Collaborative psych-gospel 'Kids See Ghosts' with Kid Cudi debuts",
+    desc:"OFFICIAL ALBUM RELEASE: Handcrafted with watercolor canvas treatments by Takashi Murakami, the 7-track therapeutic project hits records.",
     status:"verified",sources:4,
     url:"https://www.pitchfork.com",
-    image:"https://chopyawan.github.io/yewatch/image_91ea85.jpg",
+    image:"image_91ea85.jpg",
     tags:["album", "ye", "verified"]
   },
   {
     date:"Jun 1, 2018",
-    title:"[YE ERA] Raw Wyoming session record 'ye' launches with iconic mountain art",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eac6.jpg] Shot on an iPhone on the drive to the listening party, 'I hate being Bi-Polar its awesome' drops from Jackson Hole.",
+    title:"[YE / KSG] Raw Wyoming session record 'ye' launches with iconic mountain art",
+    desc:"OFFICIAL ALBUM RELEASE: Shot on an iPhone on the drive to the listening party, 'I hate being Bi-Polar its awesome' drops from Jackson Hole.",
     status:"verified",sources:4,
     url:"https://www.pitchfork.com",
-    image:"https://chopyawan.github.io/yewatch/image_91eac6.jpg",
+    image:"image_91eac6.jpg",
     tags:["album", "ye", "verified"]
   },
   {
     date:"Nov 23, 2018",
     title:"[YANDHI ERA] The high-concept unreleased album 'YANDHI' leaks online",
-    desc:"UNRELEASED ARCHIVE MYTH: [Matches unreleased purple strip concept artwork] Intended as a techno-spiritual follow-up to Yeezus, Yandhi master files leak onto global Discord servers.",
+    desc:"UNRELEASED ARCHIVE MYTH: Intended as a techno-spiritual follow-up to Yeezus, Yandhi master files leak onto global Discord servers.",
     status:"unverified",sources:2,
     url:"https://www.reddit.com/r/kanye",
     image:"https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=600&q=80",
@@ -439,64 +440,64 @@ const STATIC = [
   {
     date:"Feb 14, 2016",
     title:"[LIFE OF PABLO] 'TLOP' changes audio mixing histories at Madison Square Garden",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eb00.jpg] Clad in a distinctive orange layout grid, Ye tracking metrics update the album live over streaming backend feeds.",
+    desc:"OFFICIAL ALBUM RELEASE: Clad in a distinctive orange layout grid, Ye tracking metrics update the album live over streaming backend feeds.",
     status:"verified",sources:4,
     url:"https://www.pitchfork.com",
-    image:"https://chopyawan.github.io/yewatch/image_91eb00.jpg",
+    image:"image_91eb00.jpg",
     tags:["album", "tlop", "verified"]
   },
   {
     date:"Jun 18, 2013",
     title:"[YEEZUS ERA] Industrial statement 'Yeezus' stripped of traditional case art",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eb5b.jpg] Wrapped explicitly inside a transparent raw plastic jewel case sealed with red warning tape, Yeezus shatters mainstream sound definitions.",
+    desc:"OFFICIAL ALBUM RELEASE: Wrapped explicitly inside a transparent raw plastic jewel case sealed with red warning tape, Yeezus shatters mainstream sound definitions.",
     status:"verified",sources:3,
     url:"https://www.pitchfork.com",
-    image:"https://chopyawan.github.io/yewatch/image_91eb5b.jpg",
+    image:"image_91eb5b.jpg",
     tags:["album", "yeezus", "verified"]
   },
   {
     date:"Nov 22, 2010",
     title:"[MBDTF ERA] Perfect 10/10 'My Beautiful Dark Twisted Fantasy' changes standard hiphop",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ee27.jpg crimson canvas] Crafted under strict Hawaii tracking mandates, the multi-layered magnum opus drops with alternative visual paintings.",
+    desc:"OFFICIAL ALBUM RELEASE: Crafted under strict Hawaii tracking mandates, the multi-layered magnum opus drops with alternative visual paintings.",
     status:"verified",sources:5,
     url:"https://www.pitchfork.com",
-    image:"https://chopyawan.github.io/yewatch/image_91ee27.jpg",
+    image:"image_91ee27.jpg",
     tags:["album", "mbdtf", "verified"]
   },
   {
     date:"Nov 24, 2008",
     title:"[808s ERA] Minimalist '808s & Heartbreak' pioneers autotune pop sub-genres",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ee66.png deflate heart art] Shifting to structural melancholy, Ye records with Roland TR-808 configurations following heavy personal grief.",
+    desc:"OFFICIAL ALBUM RELEASE: Shifting to structural melancholy, Ye records with Roland TR-808 configurations following heavy personal grief.",
     status:"verified",sources:3,
     url:"https://www.rollingstone.com",
-    image:"https://chopyawan.github.io/yewatch/image_91ee66.png",
+    image:"image_91ee66.png",
     tags:["album", "808s", "verified"]
   },
   {
     date:"Sep 11, 2007",
-    title:"[CLASSIC ERA] Murakami-designed 'Graduation' sweeps Billboard parameters",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91eec7.jpg purple mascot sky] Competing direct with 50 Cent, Graduation shifts the cultural landscape permanently toward art house electronic sounds.",
+    title:"[CLASSIC] Murakami-designed 'Graduation' sweeps Billboard parameters",
+    desc:"OFFICIAL ALBUM RELEASE: Competing direct with 50 Cent, Graduation shifts the cultural landscape permanently toward art house electronic sounds.",
     status:"verified",sources:4,
     url:"https://www.rollingstone.com",
-    image:"https://chopyawan.github.io/yewatch/image_91eec7.jpg",
+    image:"image_91eec7.jpg",
     tags:["album", "graduation", "classic", "verified"]
   },
   {
     date:"Aug 30, 2005",
-    title:"[CLASSIC ERA] Baroque orchestral compilation 'Late Registration' activates",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91ef1d.jpg university door bear] Co-produced with Jon Brion, the track list unifies string arrangements with chart hits like 'Gold Digger'.",
+    title:"[CLASSIC] Baroque orchestral compilation 'Late Registration' activates",
+    desc:"OFFICIAL ALBUM RELEASE: Co-produced with Jon Brion, the track list unifies string arrangements with chart hits like 'Gold Digger'.",
     status:"verified",sources:3,
     url:"https://www.rollingstone.com",
-    image:"https://chopyawan.github.io/yewatch/image_91ef1d.jpg",
+    image:"image_91ef1d.jpg",
     tags:["album", "classic", "verified"]
   },
   {
     date:"Feb 10, 2004",
-    title:"[CLASSIC ERA] Historical cultural blueprint 'The College Dropout' debuts",
-    desc:"OFFICIAL ALBUM RELEASE: [Matches uploaded image_91f22a.jpg wooden stadium bench bear] Transitioning from safe behind-the-scenes engineering following a fatal car accident, Kanye introduces chipmunk soul loops.",
+    title:"[CLASSIC] Historical cultural blueprint 'The College Dropout' debuts",
+    desc:"OFFICIAL ALBUM RELEASE: Transitioning from safe behind-the-scenes engineering following a fatal car accident, Kanye introduces chipmunk soul loops.",
     status:"verified",sources:4,
     url:"https://www.rollingstone.com",
-    image:"https://chopyawan.github.io/yewatch/image_91f22a.jpg",
+    image:"image_91f22a.jpg",
     tags:["album", "classic", "verified"]
   }
 ];
@@ -513,8 +514,6 @@ const TOUR = [
 ];
 
 let CurrentActiveEra = 'all';
-let unreadCount = 0;
-const notificationsList = [];
 
 /* ─── MORPH THEME SYSTEM ─── */
 function selectEra(eraName) {
@@ -598,7 +597,6 @@ function makeEntryEl(e, num){
   const art = document.createElement('article');
   art.className = `entry`;
   
-  // ตรวจจับข้อผิดพลาดของภาพ หากดึงจากเครื่องชั่วคราวให้แสดง Fallback คลีนๆ แทน
   art.innerHTML = `
     <div class="entry-num">${String(num).padStart(2,'0')}</div>
     <div class="entry-inner">
@@ -689,65 +687,68 @@ function runSearch(query){
   }, 350);
 }
 
-/* ─── NOTIFICATION LIVE SIMULATOR ─── */
+/* ─── REALISTIC API MONITOR LOG GENERATOR ─── */
+let logIndex = 0;
 function toggleNotifDropdown() {
-  const dropdown = document.getElementById('notifDropdown');
-  dropdown.classList.toggle('show');
-  if(dropdown.classList.contains('show')) { unreadCount = 0; updateBellBadge(); }
-}
-function updateBellBadge() {
-  const badge = document.getElementById('bellBadge');
-  if(unreadCount > 0) { badge.textContent = unreadCount; badge.style.display = 'inline-block'; } 
-  else { badge.style.display = 'none'; }
-}
-function clearNotifications() { notificationsList.length = 0; unreadCount = 0; updateBellBadge(); renderNotifications(); }
-
-function pushNotification(platform, text) {
-  const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  notificationsList.unshift({ platform, text, time: timeStr });
-  if(notificationsList.length > 20) notificationsList.pop();
-  
-  const dropdown = document.getElementById('notifDropdown');
-  if(!dropdown.classList.contains('show')) { unreadCount++; updateBellBadge(); }
-  renderNotifications();
+  document.getElementById('notifDropdown').classList.toggle('show');
+  document.getElementById('bellBadge').style.display = 'none';
 }
 
-function renderNotifications() {
+function addSystemLog() {
   const container = document.getElementById('notifItemsContainer');
-  if(notificationsList.length === 0) {
-    container.innerHTML = '<div class="notif-empty">NO NEW SOCIAL MOVEMENTS DETECTED</div>'; return;
+  const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  
+  // ชุดบันทึกจำลองคำสั่งแบบนักพัฒนาเว็บที่สมจริง
+  const logs = [
+    { t: "SYS // INITIALIZING SCOPE", m: "Connecting to secure social tokens on X Core API network... Status: 200 OK" },
+    { t: "SCRAPER // X-FEED", m: "Scanning @kanyewest timeline variables... No structural change detected inside metadata hashes." },
+    { t: "SCRAPER // INSTAGRAM", m: "Parsing Bianca Censori stories payload... Assets match cached indexes." },
+    { t: "SYS // LOG NOMINAL", m: "YZY App network socket payload response time: 42ms. Security parameters intact." },
+    { t: "SCRAPER // DISCORD", m: "Monitoring unreleased track buy rooms... Stems for 'Yandhi' remains offline." },
+    { t: "SYS // RATE LIMIT CHECK", m: "API Request allowances: 899/900 available. Reset interval standard." }
+  ];
+
+  const currentLog = logs[logIndex % logs.length];
+  logIndex++;
+
+  const div = document.createElement('div');
+  div.className = 'notif-item';
+  div.innerHTML = `
+    <span class="log-tag" style="color: var(--accent); font-weight: bold;">[${currentLog.t}]</span>
+    <div>${currentLog.m}</div>
+    <span class="time">${timestamp} // STATUS LOG NOMINAL</span>
+  `;
+  
+  // ล้างข้อความว่างออกหากมีไฟล์ใหม่เข้ามา
+  const emptyMsg = container.querySelector('.notif-empty');
+  if(emptyMsg) emptyMsg.remove();
+  
+  container.insertBefore(div, container.firstChild);
+
+  // ควบคุมขนาดกล่องบันทึกไม่ให้เกิน 6 รายการเพื่อความคลีน
+  if(container.children.length > 6) {
+    container.lastChild.remove();
   }
-  container.innerHTML = '';
-  notificationsList.forEach(item => {
-    let pColor = 'var(--accent)';
-    if(item.platform === 'INSTAGRAM') pColor = 'var(--red)';
-    if(item.platform === 'YZY APP') pColor = 'var(--green)';
-    const div = document.createElement('div');
-    div.className = 'notif-item';
-    div.innerHTML = `<span class="platform-tag" style="color:${pColor}">[${item.platform}]</span><div>${esc(item.text)}</div><span class="time">${item.time} // FEED LOG</span>`;
-    container.appendChild(div);
-  });
+
+  // แจ้งเตือนไฟกะพริบที่ปุ่มตัวเลขสตรีมเมอร์
+  const badge = document.getElementById('bellBadge');
+  const dropdown = document.getElementById('notifDropdown');
+  if(!dropdown.classList.contains('show')) {
+    badge.textContent = "● NEW LOG";
+    badge.style.display = 'inline-block';
+  }
 }
+
+// รันระเบียบบันทึกคำขอ API ทุก ๆ 12 วินาทีให้เหมือนตู้เซิร์ฟเวอร์กำลังดักฟังจริง
+setInterval(addSystemLog, 12000);
+addSystemLog(); // เริ่มทำงานทันที
 
 window.addEventListener('click', function(e) {
   if (!document.querySelector('.notif-wrapper').contains(e.target)) { document.getElementById('notifDropdown').classList.remove('show'); }
 });
 
-const STREAM_MOCK_DATA = [
-  { p: "X/TWITTER", t: "@kanyewest just tweeted: 'BULLY DELUXE MIXING IS OFFICIALLY SEALED.'" },
-  { p: "INSTAGRAM", t: "Bianca Censori posted story update inside Tokyo design compound." },
-  { p: "YZY APP", t: "ALERT: Secret 30-second audio track of unreleased 2018 'Yandhi' leaked on code layer." },
-  { p: "X/TWITTER", t: "Playboi Carti posted: 'VAMPYRE TRACKS READY FOR THE STADIUMS' trending worldwide." },
-  { p: "YZY APP", t: "YZY CLOTHING: Surprise restock of brutalist heavy box blanks launched." }
-];
-setTimeout(() => { pushNotification(STREAM_MOCK_DATA[0].p, STREAM_MOCK_DATA[0].t); }, 3000);
-setInterval(() => {
-  const alert = STREAM_MOCK_DATA[Math.floor(Math.random() * STREAM_MOCK_DATA.length)];
-  pushNotification(alert.p, alert.t);
-}, 38000);
-
-document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key === 'Enter') handleSearch(); });
 function esc(s){ const d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
+function switchTab(name) { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.getElementById('page-'+name).classList.add('active'); document.getElementById('btn-'+name).classList.add('active'); }
 </script>
 </body>
 </html>
